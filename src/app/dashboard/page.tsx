@@ -1,183 +1,240 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import StatsBar from '@/components/dashboard/StatsBar';
 import ComplianceRing from '@/components/dashboard/ComplianceRing';
+import MastheadHero from '@/components/dashboard/MastheadHero';
+import DirectiveFlow from '@/components/dashboard/DirectiveFlow';
+import DeadlineHeatmap from '@/components/dashboard/DeadlineHeatmap';
 import ActionCard from '@/components/actions/ActionCard';
-import ActionTimeline from '@/components/actions/ActionTimeline';
 import DepartmentTag from '@/components/shared/DepartmentTag';
-import { DEMO_ACTIONS, DEMO_JUDGMENTS, DEMO_DEPARTMENT_STATS } from '@/lib/demo-data';
+import {
+  DEMO_ACTIONS,
+  DEMO_JUDGMENTS,
+  DEMO_DEPARTMENT_STATS,
+} from '@/lib/demo-data';
 import { formatDate } from '@/lib/utils';
 import Link from 'next/link';
-import { ArrowRight, FileText, Clock, TrendingUp, Scale, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import {
+  ArrowRight,
+  AlertTriangle,
+  CheckCircle2,
+  Clock,
+  Quote,
+} from 'lucide-react';
 
 export default function DashboardPage() {
   const overdueActions = DEMO_ACTIONS.filter((a) => a.status === 'overdue');
-  const recentActions = DEMO_ACTIONS.slice(0, 3);
-  const totalCompleted = DEMO_ACTIONS.filter((a) => a.status === 'completed').length;
-  const overallCompliance = Math.round((totalCompleted / DEMO_ACTIONS.length) * 100);
+  const reviewActions = DEMO_ACTIONS.filter(
+    (a) => a.status === 'pending_verification'
+  );
+  const recentActions = [...DEMO_ACTIONS]
+    .sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
+    .slice(0, 4);
+  const totalCompleted = DEMO_ACTIONS.filter(
+    (a) => a.status === 'completed'
+  ).length;
+  const overallCompliance = Math.round(
+    (totalCompleted / DEMO_ACTIONS.length) * 100
+  );
 
   const today = new Date();
   const dateStr = today.toLocaleDateString('en-IN', {
-    weekday: 'long',
-    year: 'numeric',
+    day: '2-digit',
     month: 'long',
-    day: 'numeric',
+    year: 'numeric',
   });
 
+  // Pull a directive that flagged "requires legal opinion" so we can feature
+  // it as the editorial pull-quote on the page.
+  const featuredDirective =
+    DEMO_ACTIONS.find((a) => a.requires_legal_opinion) ?? DEMO_ACTIONS[0];
+
   return (
-    <div className="space-y-6 animate-fade-in">
-      {/* Hero header */}
-      <div className="dashboard-hero rounded-2xl p-6 text-white relative overflow-hidden">
-        <div className="hero-pattern" />
-        <div className="relative z-10 flex items-start justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Scale size={16} className="opacity-70" />
-              <span className="text-white/70 text-xs font-mono uppercase tracking-widest">
-                Supreme Court of India · CCMS
-              </span>
-            </div>
-            <h1 className="font-display text-3xl font-bold leading-tight">
-              Compliance Dashboard
-            </h1>
-            <p className="text-white/70 mt-1.5 text-sm max-w-xl">
-              Real-time tracking of court-mandated action compliance across all departments.
-              {overdueActions.length > 0 && (
-                <span className="text-amber-300 font-medium ml-1">
-                  {overdueActions.length} action{overdueActions.length > 1 ? 's' : ''} require immediate attention.
-                </span>
-              )}
-            </p>
-          </div>
-          <div className="text-right shrink-0 hidden sm:block">
-            <div className="text-white/50 text-[11px] font-mono mb-1">{dateStr}</div>
-            <div className="text-white text-xs font-mono flex items-center gap-1.5 justify-end">
-              <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-              {new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })} IST
-            </div>
-            <div className="mt-3 px-3 py-1.5 rounded-lg bg-white/10 border border-white/20">
-              <div className="text-xl font-bold font-mono text-white">{overallCompliance}%</div>
-              <div className="text-white/60 text-[11px]">Overall compliance</div>
-            </div>
-          </div>
-        </div>
+    <div className="space-y-9 animate-page-enter">
+      {/* ── Hero ────────────────────────────────────────────────── */}
+      <MastheadHero
+        todayLabel={dateStr}
+        overdueCount={overdueActions.length}
+        reviewCount={reviewActions.length}
+        compliancePct={overallCompliance}
+      />
 
-        {/* Alert strip */}
-        {overdueActions.length > 0 && (
-          <div className="relative z-10 mt-4 flex items-center gap-2 bg-red-500/20 border border-red-400/30 rounded-lg px-4 py-2">
-            <AlertTriangle size={14} className="text-red-300 flex-shrink-0" />
-            <span className="text-red-200 text-xs font-medium">
-              {overdueActions.length} overdue directive{overdueActions.length > 1 ? 's' : ''} across departments —
-            </span>
-            <Link href="/actions?status=overdue" className="text-red-200 underline underline-offset-2 text-xs hover:text-white transition-colors">
-              Review now
-            </Link>
-          </div>
-        )}
-      </div>
+      {/* ── Section §02 · Stats ─────────────────────────────────── */}
+      <Section number="§02" title="The Edition's Numbers">
+        <StatsBar />
+      </Section>
 
-      {/* Stats */}
-      <StatsBar />
+      {/* ── Section §03 · Directive Flow ──────────────────────── */}
+      <DirectiveFlow />
 
-      {/* Main grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        {/* Left: Department compliance rings */}
-        <div className="xl:col-span-2 space-y-4">
-          <div className="card p-5">
-            <div className="flex items-center justify-between mb-5">
-              <div>
-                <h2 className="font-display font-semibold text-gray-800 text-lg flex items-center gap-2">
-                  <TrendingUp size={18} className="text-green-600" />
-                  Department Compliance
-                </h2>
-                <p className="text-xs text-gray-400 mt-0.5">Live compliance rates across all 8 departments</p>
-              </div>
-              <Link
-                href="/departments"
-                className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors font-medium"
+      {/* ── Section §04 · Deadline Heatmap ──────────────────────── */}
+      <DeadlineHeatmap />
+
+      {/* ── Section §05 · Department Compliance ─────────────────── */}
+      <Section number="§05" title="Department Compliance" rightSlot={
+        <Link
+          href="/departments"
+          className="text-[11px] font-mono uppercase tracking-[0.16em] text-[var(--color-saffron)] hover:text-[var(--color-saffron-deep)] inline-flex items-center gap-1 transition-colors"
+        >
+          All bureaus <ArrowRight size={11} />
+        </Link>
+      }>
+        <div className="card card-paper p-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 stagger">
+            {DEMO_DEPARTMENT_STATS.map((dept, i) => (
+              <motion.div
+                key={dept.department}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-10%' }}
+                transition={{ duration: 0.6, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
               >
-                View all <ArrowRight size={12} />
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {DEMO_DEPARTMENT_STATS.map((dept) => (
                 <Link
-                  key={dept.department}
                   href={`/departments/${encodeURIComponent(dept.department)}`}
-                  className="dept-ring-card flex flex-col items-center gap-2.5 p-3.5 rounded-xl hover:bg-gray-50 transition-all duration-200 cursor-pointer group border border-transparent hover:border-gray-100"
+                  className="dept-ring-card flex flex-col items-center gap-3 p-4 rounded-[3px] cursor-pointer group border border-transparent transition-all duration-200 hover:bg-[rgba(242,235,216,0.03)] hover:border-[var(--color-rule)]"
                 >
                   <ComplianceRing
                     percentage={dept.compliance_pct}
-                    size={80}
+                    size={86}
                     strokeWidth={6}
                     color={dept.color_hex}
-                    sublabel="done"
+                    sublabel="DONE"
                   />
-                  <div className="text-center w-full">
+                  <div className="text-center w-full space-y-1">
                     <DepartmentTag department={dept.department} size="sm" />
-                    <div className="text-xs text-gray-400 mt-1 font-mono">
-                      {dept.completed}/{dept.total} done
+                    <div className="text-[10px] text-[var(--color-ink-mute)] font-mono">
+                      {dept.completed}/{dept.total} complete
                     </div>
                     {dept.overdue > 0 ? (
-                      <div className="text-[11px] text-red-500 font-semibold mt-0.5 flex items-center justify-center gap-0.5">
-                        <AlertTriangle size={10} />
+                      <div className="text-[10px] text-[var(--color-vermilion)] font-mono font-semibold flex items-center justify-center gap-1 uppercase tracking-wider">
+                        <AlertTriangle size={9} />
                         {dept.overdue} overdue
                       </div>
                     ) : (
-                      <div className="text-[11px] text-green-600 font-medium mt-0.5 flex items-center justify-center gap-0.5">
-                        <CheckCircle2 size={10} />
+                      <div className="text-[10px] text-[var(--color-verdant)] font-mono font-semibold flex items-center justify-center gap-1 uppercase tracking-wider">
+                        <CheckCircle2 size={9} />
                         On track
                       </div>
                     )}
                   </div>
                 </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* ── Section §06 · Editorial split (pull-quote + sidebar) ─ */}
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        {/* LEFT — featured pull-quote + recent actions */}
+        <div className="xl:col-span-2 space-y-6">
+          {featuredDirective && (
+            <motion.figure
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="card card-paper p-7 md:p-9 relative"
+            >
+              <Quote
+                size={36}
+                className="absolute top-5 left-5 text-[var(--color-saffron)] opacity-25"
+              />
+              <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-ink-mute)] mb-4 ml-12">
+                §06 · From the day&apos;s rulings
+              </div>
+              <blockquote
+                className="font-display text-[22px] md:text-[26px] leading-[1.32] text-[var(--color-ink)] ml-12"
+                style={{
+                  fontVariationSettings: "'opsz' 96, 'WONK' 1, 'SOFT' 50",
+                  fontWeight: 460,
+                }}
+              >
+                &ldquo;{featuredDirective.directive_text}&rdquo;
+              </blockquote>
+              <figcaption className="mt-5 ml-12 flex items-center gap-3 text-[12px] text-[var(--color-ink-mute)] font-mono">
+                <span>—</span>
+                <Link
+                  href={`/judgments/${featuredDirective.judgment_id}`}
+                  className="text-[var(--color-azure)] hover:text-[var(--color-saffron)] transition-colors font-semibold"
+                >
+                  {featuredDirective.judgment?.case_number}
+                </Link>
+                <span>·</span>
+                <span>{featuredDirective.judgment?.court}</span>
+                {featuredDirective.requires_legal_opinion && (
+                  <span className="ml-auto inline-flex items-center gap-1 text-[var(--color-saffron-deep)] font-semibold">
+                    <AlertTriangle size={11} />
+                    Legal opinion sought
+                  </span>
+                )}
+              </figcaption>
+            </motion.figure>
+          )}
+
+          <Section number="§07" title="Recently filed directives">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {recentActions.map((action) => (
+                <ActionCard key={action.id} action={action} compact />
               ))}
             </div>
-          </div>
-
-          {/* Timeline */}
-          <ActionTimeline actions={DEMO_ACTIONS} />
+          </Section>
         </div>
 
-        {/* Right: Recent activity + overdue */}
-        <div className="space-y-4">
-          {/* Overdue alerts */}
+        {/* RIGHT — overdue stack + recent judgments */}
+        <div className="space-y-6">
           {overdueActions.length > 0 && (
-            <div className="card p-4 border-red-200 bg-red-50/50">
-              <h3 className="font-semibold text-red-700 text-sm mb-3 flex items-center gap-2">
-                <Clock size={14} className="text-red-600" />
-                Overdue Actions
-                <span className="ml-auto bg-red-100 text-red-600 text-[11px] font-mono px-1.5 py-0.5 rounded-full">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="card card-paper p-5 border-[var(--color-vermilion)]/40 bg-[#FBE7E9]/40"
+            >
+              <h3 className="font-display font-semibold text-[var(--color-vermilion)] text-[15px] mb-3 flex items-center gap-2 uppercase tracking-[0.08em]">
+                <Clock size={14} />
+                Overdue Notice
+                <span className="ml-auto text-[10px] font-mono bg-[var(--color-vermilion)]/15 text-[var(--color-vermilion)] px-1.5 py-0.5 rounded-sm">
                   {overdueActions.length}
                 </span>
               </h3>
               <div className="space-y-2">
-                {overdueActions.map((action) => (
+                {overdueActions.slice(0, 3).map((action) => (
                   <ActionCard key={action.id} action={action} compact />
                 ))}
               </div>
-              <Link
-                href="/actions?status=overdue"
-                className="mt-3 flex items-center justify-center gap-1 text-xs text-red-600 hover:text-red-800 font-medium pt-3 border-t border-red-100 transition-colors"
-              >
-                View all overdue <ArrowRight size={11} />
-              </Link>
-            </div>
+              {overdueActions.length > 3 && (
+                <Link
+                  href="/actions?status=overdue"
+                  className="mt-3 flex items-center justify-center gap-1 text-[11px] font-mono text-[var(--color-vermilion)] hover:text-[var(--color-ink)] uppercase tracking-[0.12em] pt-3 border-t border-[var(--color-vermilion)]/20 transition-colors"
+                >
+                  All overdue <ArrowRight size={11} />
+                </Link>
+              )}
+            </motion.div>
           )}
 
-          {/* Recent judgments */}
-          <div className="card p-4">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-display font-semibold text-gray-800 text-sm flex items-center gap-2">
-                <FileText size={15} className="text-blue-500" />
-                Recent Judgments
-              </h3>
-              <Link href="/judgments" className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors">
-                All <ArrowRight size={11} />
+          {/* Recent judgments — newspaper-list style */}
+          <div className="card card-paper p-5">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-ink-mute)]">
+                  §08
+                </div>
+                <h3 className="font-display font-semibold text-[var(--color-ink)] text-[16px]">
+                  Today&apos;s Docket
+                </h3>
+              </div>
+              <Link
+                href="/judgments"
+                className="text-[10px] font-mono uppercase tracking-[0.16em] text-[var(--color-saffron)] hover:text-[var(--color-saffron-deep)] inline-flex items-center gap-1 transition-colors"
+              >
+                All <ArrowRight size={10} />
               </Link>
             </div>
-            <div className="space-y-2.5">
-              {DEMO_JUDGMENTS.slice(0, 4).map((j) => {
+            <div className="divide-y divide-[var(--color-divider)]">
+              {DEMO_JUDGMENTS.slice(0, 5).map((j) => {
                 const compliancePct = j.action_count
                   ? Math.round(((j.completed_count || 0) / j.action_count) * 100)
                   : 0;
@@ -185,30 +242,53 @@ export default function DashboardPage() {
                   <Link
                     key={j.id}
                     href={`/judgments/${j.id}`}
-                    className="block p-3 rounded-xl border border-gray-100 hover:border-blue-100 hover:bg-blue-50/30 transition-all group"
+                    className="block py-3 group"
                   >
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-[11px] font-mono text-blue-600 font-semibold group-hover:text-blue-700">{j.case_number}</span>
+                    <div className="flex items-baseline justify-between gap-2 mb-1">
+                      <span className="text-[10px] font-mono font-semibold text-[var(--color-azure)] tracking-wide">
+                        {j.case_number}
+                      </span>
+                      <span className="text-[10px] font-mono text-[var(--color-ink-mute)]">
+                        {formatDate(j.date_of_judgment)}
+                      </span>
+                    </div>
+                    <div
+                      className="font-display text-[13px] leading-snug text-[var(--color-ink)] line-clamp-2 group-hover:text-[var(--color-saffron-deep)] transition-colors"
+                      style={{ fontVariationSettings: "'opsz' 36, 'WONK' 0", fontWeight: 480 }}
+                    >
+                      {j.case_title}
+                    </div>
+                    <div className="mt-1.5 flex items-center gap-2">
+                      <div className="flex-1 h-1 bg-[var(--color-parchment-dark)] rounded-sm overflow-hidden">
+                        <motion.div
+                          className="h-full"
+                          style={{
+                            background:
+                              compliancePct >= 70
+                                ? 'var(--color-verdant)'
+                                : compliancePct >= 40
+                                  ? 'var(--color-saffron)'
+                                  : 'var(--color-vermilion)',
+                          }}
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${compliancePct}%` }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                        />
+                      </div>
                       <span
-                        className="text-[10px] font-mono font-bold"
-                        style={{ color: compliancePct >= 70 ? '#2D6A4F' : compliancePct >= 40 ? '#D4831A' : '#C1121F' }}
+                        className="text-[10px] font-mono font-semibold tabular-nums w-9 text-right"
+                        style={{
+                          color:
+                            compliancePct >= 70
+                              ? 'var(--color-verdant)'
+                              : compliancePct >= 40
+                                ? 'var(--color-saffron-deep)'
+                                : 'var(--color-vermilion)',
+                        }}
                       >
                         {compliancePct}%
                       </span>
-                    </div>
-                    <div className="text-xs font-medium text-gray-800 line-clamp-1">{j.case_title}</div>
-                    <div className="flex items-center justify-between mt-1.5">
-                      <span className="text-[11px] text-gray-400 truncate max-w-[130px]">{j.court}</span>
-                      <span className="text-[11px] font-mono text-gray-400 shrink-0">{formatDate(j.date_of_judgment)}</span>
-                    </div>
-                    <div className="mt-1.5 bg-gray-100 rounded-full h-1 overflow-hidden">
-                      <div
-                        className="h-full rounded-full transition-all"
-                        style={{
-                          width: `${compliancePct}%`,
-                          background: compliancePct >= 70 ? '#2D6A4F' : compliancePct >= 40 ? '#D4831A' : '#C1121F',
-                        }}
-                      />
                     </div>
                   </Link>
                 );
@@ -216,22 +296,70 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Recent action items */}
-          <div className="card p-4">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-display font-semibold text-gray-800 text-sm">Recent Actions</h3>
-              <Link href="/actions" className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors">
-                All <ArrowRight size={11} />
-              </Link>
+          {/* Colophon */}
+          <div
+            className="card p-5 text-center relative overflow-hidden"
+            style={{
+              background:
+                'radial-gradient(ellipse at top, rgba(231,140,45,0.12) 0%, transparent 60%), var(--color-ink)',
+            }}
+          >
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-4 top-3 h-px"
+              style={{
+                background:
+                  'linear-gradient(90deg, transparent, rgba(231,140,45,0.5), transparent)',
+              }}
+            />
+            <div
+              className="text-[15px] font-display text-[var(--color-fg)]"
+              style={{ fontVariationSettings: "'opsz' 36, 'WONK' 1, 'SOFT' 50", fontWeight: 580 }}
+            >
+              Hand-set in Bengaluru
             </div>
-            <div className="space-y-2">
-              {recentActions.map((action) => (
-                <ActionCard key={action.id} action={action} compact />
-              ))}
+            <div className="text-[10px] font-mono uppercase tracking-[0.22em] text-[var(--color-saffron)] mt-2">
+              Karnataka State Data Centre · MMXXVI
+            </div>
+            <div className="text-[9px] font-mono text-[var(--color-fg-mute)] mt-1.5">
+              {today.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
             </div>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+interface SectionProps {
+  number: string;
+  title: string;
+  rightSlot?: React.ReactNode;
+  children: React.ReactNode;
+}
+
+function Section({ number, title, rightSlot, children }: SectionProps) {
+  return (
+    <section>
+      <div className="flex items-end justify-between mb-4 gap-3">
+        <div>
+          <div className="text-[10px] font-mono uppercase tracking-[0.22em] text-[var(--color-ink-mute)] mb-1">
+            {number}
+          </div>
+          <h2
+            className="font-display text-[22px] text-[var(--color-ink)] leading-tight"
+            style={{
+              fontVariationSettings: "'opsz' 36, 'WONK' 1, 'SOFT' 50",
+              fontWeight: 580,
+              letterSpacing: '-0.012em',
+            }}
+          >
+            {title}
+          </h2>
+        </div>
+        {rightSlot}
+      </div>
+      {children}
+    </section>
   );
 }

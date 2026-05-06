@@ -15,23 +15,33 @@ export default function DeptDetailPage(props: PageProps<'/departments/[dept]'>) 
   const actions = DEMO_ACTIONS.filter((a) => a.department === deptName);
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <Link href="/departments" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors">
-        <ChevronLeft size={16} /> Back to Departments
+    <div className="space-y-6 animate-page-enter">
+      <Link
+        href="/departments"
+        className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-[0.14em] text-[var(--color-fg-mute)] hover:text-[var(--color-saffron)] transition-colors"
+      >
+        <ChevronLeft size={14} /> Back to bureaus
       </Link>
 
       <div className="flex items-start gap-6 flex-wrap">
         <div className="flex-1">
           <DepartmentTag department={deptName} size="md" />
-          <h1 className="font-display text-3xl font-bold text-gray-900 mt-2">{deptName}</h1>
-          <p className="text-gray-500 text-sm mt-1">{actions.length} court-mandated action items</p>
+          <h1
+            className="headline-md text-[32px] mt-3"
+            style={{ fontVariationSettings: "'opsz' 144, 'WONK' 1, 'SOFT' 50", fontWeight: 580 }}
+          >
+            {deptName}
+          </h1>
+          <p className="text-[12px] text-[var(--color-fg-soft)] mt-2 font-mono uppercase tracking-[0.1em]">
+            {actions.length} court-mandated directives
+          </p>
         </div>
         {stats && (
           <ComplianceRing
             percentage={stats.compliance_pct}
-            size={100}
+            size={108}
             color={stats.color_hex}
-            sublabel="compliant"
+            sublabel="COMPLIANT"
           />
         )}
       </div>
@@ -39,27 +49,48 @@ export default function DeptDetailPage(props: PageProps<'/departments/[dept]'>) 
       {stats && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
-            { label: 'Total', value: stats.total, color: '#374151' },
-            { label: 'Completed', value: stats.completed, color: '#2D6A4F' },
-            { label: 'In Progress', value: stats.in_progress, color: '#7F77DD' },
-            { label: 'Overdue', value: stats.overdue, color: '#C1121F' },
+            { label: 'Total', value: stats.total, color: 'var(--color-fg)' },
+            { label: 'Completed', value: stats.completed, color: 'var(--color-verdant)' },
+            { label: 'In progress', value: stats.in_progress, color: '#BBA9EC' },
+            { label: 'Overdue', value: stats.overdue, color: 'var(--color-vermilion)' },
           ].map(({ label, value, color }) => (
-            <div key={label} className="card p-4 text-center">
-              <div className="text-2xl font-bold font-mono" style={{ color }}>{value}</div>
-              <div className="text-xs text-gray-400 mt-1">{label}</div>
+            <div key={label} className="card card-paper p-4 text-center">
+              <div
+                className="text-[28px] font-display font-semibold numerals-tab leading-none"
+                style={{ color, fontVariationSettings: "'opsz' 96, 'WONK' 1" }}
+              >
+                {value}
+              </div>
+              <div className="text-[10px] text-[var(--color-fg-mute)] font-mono uppercase tracking-[0.16em] mt-2">
+                {label}
+              </div>
             </div>
           ))}
         </div>
       )}
 
       <div>
-        <h2 className="font-display font-semibold text-gray-800 mb-4">Action Items</h2>
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-fg-mute)] mb-1">
+              §02 · Directives
+            </div>
+            <h2 className="headline-md text-[20px]">Action items for this bureau</h2>
+          </div>
+          <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-[var(--color-fg-mute)]">
+            {actions.length} listed
+          </span>
+        </div>
         <div className="space-y-3">
           {actions.map((action) => (
             <ActionCard key={action.id} action={action} />
           ))}
           {actions.length === 0 && (
-            <div className="text-center py-12 text-gray-400">No actions for this department</div>
+            <div className="card p-12 text-center">
+              <p className="font-display text-[14px] text-[var(--color-fg-soft)]">
+                No directives currently allocated to this bureau.
+              </p>
+            </div>
           )}
         </div>
       </div>

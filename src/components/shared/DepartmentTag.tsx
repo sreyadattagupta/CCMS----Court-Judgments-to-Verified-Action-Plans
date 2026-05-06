@@ -12,25 +12,30 @@ export default function DepartmentTag({
   size = 'md',
   className,
 }: DepartmentTagProps) {
-  const color = DEPARTMENT_COLORS[department] || '#6B7280';
+  const color = DEPARTMENT_COLORS[department] || '#93A4B6';
 
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full font-medium',
-        size === 'sm' ? 'text-[11px]' : 'text-xs',
+        'inline-flex items-center gap-1.5 rounded-[3px] font-mono uppercase tracking-[0.08em]',
+        size === 'sm' ? 'text-[10px] px-1.5 py-[3px]' : 'text-[11px] px-2 py-1',
+        'border transition-colors',
         className
       )}
       style={{
-        backgroundColor: color + '18',
-        color: color,
-        border: `1px solid ${color}30`,
+        backgroundColor: `${color}18`,
+        color,
+        borderColor: `${color}40`,
+        boxShadow: `inset 0 0 0 1px ${color}10`,
       }}
       aria-label={`Department: ${department}`}
     >
       <span
-        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-        style={{ backgroundColor: color }}
+        className="w-[5px] h-[5px] rounded-full flex-shrink-0"
+        style={{
+          backgroundColor: color,
+          boxShadow: `0 0 6px ${color}80`,
+        }}
         aria-hidden="true"
       />
       {department}

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { useAppStore } from '@/store/useAppStore';
 import { AppNotification, NotificationType } from '@/lib/notifications';
 import {
@@ -16,80 +17,52 @@ import {
   Check,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Button from '@/components/shared/Button';
+import { Chip } from '@/components/shared/Input';
 
 interface TypeConfig {
   label: string;
   icon: React.ReactNode;
-  cardBg: string;
-  cardBorder: string;
-  chipBg: string;
-  chipText: string;
-  iconBg: string;
-  iconText: string;
-  linkText: string;
-  dotBg: string;
+  color: string;
+  bg: string;
+  border: string;
 }
 
 const TYPE_CONFIG: Record<NotificationType, TypeConfig> = {
   overdue: {
     label: 'Overdue',
-    icon: <AlertTriangle size={16} />,
-    cardBg: 'bg-red-50',
-    cardBorder: 'border-red-200',
-    chipBg: 'bg-red-100',
-    chipText: 'text-red-700',
-    iconBg: 'bg-red-100',
-    iconText: 'text-red-600',
-    linkText: 'text-red-600',
-    dotBg: 'bg-red-500',
+    icon: <AlertTriangle size={14} />,
+    color: '#F08593',
+    bg: 'rgba(228,94,110,0.08)',
+    border: 'rgba(228,94,110,0.32)',
   },
   due_soon: {
-    label: 'Due Soon',
-    icon: <Clock size={16} />,
-    cardBg: 'bg-amber-50',
-    cardBorder: 'border-amber-200',
-    chipBg: 'bg-amber-100',
-    chipText: 'text-amber-700',
-    iconBg: 'bg-amber-100',
-    iconText: 'text-amber-600',
-    linkText: 'text-amber-600',
-    dotBg: 'bg-amber-500',
+    label: 'Due soon',
+    icon: <Clock size={14} />,
+    color: '#F0A04A',
+    bg: 'rgba(231,140,45,0.08)',
+    border: 'rgba(231,140,45,0.32)',
   },
   pending_review: {
     label: 'Review',
-    icon: <FileSearch size={16} />,
-    cardBg: 'bg-blue-50',
-    cardBorder: 'border-blue-200',
-    chipBg: 'bg-blue-100',
-    chipText: 'text-blue-700',
-    iconBg: 'bg-blue-100',
-    iconText: 'text-blue-600',
-    linkText: 'text-blue-600',
-    dotBg: 'bg-blue-500',
+    icon: <FileSearch size={14} />,
+    color: '#9DBAFF',
+    bg: 'rgba(122,160,255,0.08)',
+    border: 'rgba(122,160,255,0.32)',
   },
   completed: {
     label: 'Completed',
-    icon: <CheckCircle2 size={16} />,
-    cardBg: 'bg-green-50',
-    cardBorder: 'border-green-200',
-    chipBg: 'bg-green-100',
-    chipText: 'text-green-700',
-    iconBg: 'bg-green-100',
-    iconText: 'text-green-600',
-    linkText: 'text-green-600',
-    dotBg: 'bg-green-500',
+    icon: <CheckCircle2 size={14} />,
+    color: '#5DBC95',
+    bg: 'rgba(79,168,130,0.08)',
+    border: 'rgba(79,168,130,0.32)',
   },
   system: {
     label: 'System',
-    icon: <Cpu size={16} />,
-    cardBg: 'bg-purple-50',
-    cardBorder: 'border-purple-200',
-    chipBg: 'bg-purple-100',
-    chipText: 'text-purple-700',
-    iconBg: 'bg-purple-100',
-    iconText: 'text-purple-600',
-    linkText: 'text-purple-600',
-    dotBg: 'bg-purple-500',
+    icon: <Cpu size={14} />,
+    color: '#BBA9EC',
+    bg: 'rgba(161,139,227,0.08)',
+    border: 'rgba(161,139,227,0.32)',
   },
 };
 
@@ -97,15 +70,15 @@ const FILTER_TABS: { value: string; label: string }[] = [
   { value: 'all', label: 'All' },
   { value: 'unread', label: 'Unread' },
   { value: 'overdue', label: 'Overdue' },
-  { value: 'due_soon', label: 'Due Soon' },
+  { value: 'due_soon', label: 'Due soon' },
   { value: 'pending_review', label: 'Review' },
   { value: 'completed', label: 'Completed' },
 ];
 
 const SUMMARY_ITEMS: { type: NotificationType; label: string }[] = [
   { type: 'overdue', label: 'Overdue' },
-  { type: 'due_soon', label: 'Due Soon' },
-  { type: 'pending_review', label: 'Needs Review' },
+  { type: 'due_soon', label: 'Due soon' },
+  { type: 'pending_review', label: 'Needs review' },
   { type: 'system', label: 'System' },
 ];
 
@@ -124,9 +97,11 @@ function formatTimeAgo(iso: string): string {
 function NotificationItem({
   notif,
   onRead,
+  index,
 }: {
   notif: AppNotification;
   onRead: (id: string) => void;
+  index: number;
 }) {
   const cfg = TYPE_CONFIG[notif.type];
   const actionHref = notif.actionId
@@ -136,88 +111,115 @@ function NotificationItem({
     : null;
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.04, ease: [0.16, 1, 0.3, 1] }}
       className={cn(
-        'flex gap-4 p-4 rounded-xl border transition-all duration-200',
+        'flex gap-4 p-4 rounded-[3px] border transition-all duration-200',
         notif.read
-          ? 'bg-white border-gray-100 opacity-60'
-          : cn(cfg.cardBg, cfg.cardBorder, 'shadow-sm'),
+          ? 'border-[var(--color-rule)] opacity-55'
+          : 'border-[var(--color-rule-strong)]'
       )}
+      style={{
+        background: notif.read ? 'var(--color-ink-2)' : cfg.bg,
+        borderColor: notif.read ? 'var(--color-rule)' : cfg.border,
+      }}
     >
       {/* Unread dot */}
-      {!notif.read && (
+      {!notif.read ? (
         <div className="flex-shrink-0 mt-2">
-          <div className={cn('w-2 h-2 rounded-full', cfg.dotBg)} />
+          <div
+            className="w-2 h-2 rounded-full"
+            style={{
+              background: cfg.color,
+              boxShadow: `0 0 8px ${cfg.color}`,
+            }}
+          />
         </div>
+      ) : (
+        <div className="flex-shrink-0 w-2" />
       )}
-      {notif.read && <div className="flex-shrink-0 w-2" />}
 
       {/* Icon */}
       <div
-        className={cn(
-          'w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5',
-          notif.read ? 'bg-gray-100 text-gray-400' : cn(cfg.iconBg, cfg.iconText),
-        )}
+        className="w-10 h-10 rounded-[3px] flex items-center justify-center flex-shrink-0 mt-0.5 border"
+        style={{
+          background: notif.read ? 'rgba(242,235,216,0.04)' : cfg.bg,
+          color: notif.read ? 'var(--color-fg-mute)' : cfg.color,
+          borderColor: notif.read ? 'var(--color-rule)' : cfg.border,
+        }}
       >
         {cfg.icon}
       </div>
 
       {/* Content */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-start justify-between gap-2">
+        <div className="flex items-start justify-between gap-2 mb-1.5">
           <div className="flex items-center gap-2 flex-wrap">
             <span
-              className={cn(
-                'text-xs font-semibold font-mono px-2 py-0.5 rounded-full',
-                notif.read ? 'bg-gray-100 text-gray-500' : cn(cfg.chipBg, cfg.chipText),
-              )}
+              className="text-[10px] font-semibold font-mono uppercase tracking-[0.1em] px-1.5 py-0.5 rounded-[2px]"
+              style={{
+                background: cfg.bg,
+                color: cfg.color,
+                border: `1px solid ${cfg.border}`,
+              }}
             >
               {cfg.label}
             </span>
             {notif.caseNumber && (
-              <span className="text-xs font-mono text-blue-600 font-medium">{notif.caseNumber}</span>
+              <span className="text-[10px] font-mono text-[var(--color-azure)] font-semibold">
+                {notif.caseNumber}
+              </span>
             )}
             {notif.department && (
-              <span className="text-xs text-gray-500">{notif.department}</span>
+              <span className="text-[10px] font-mono text-[var(--color-fg-mute)]">
+                {notif.department}
+              </span>
             )}
           </div>
-          <span className="text-[11px] text-gray-400 font-mono shrink-0 mt-0.5">
+          <span className="text-[10px] text-[var(--color-fg-mute)] font-mono shrink-0 mt-0.5">
             {formatTimeAgo(notif.createdAt)}
           </span>
         </div>
 
-        <p className="font-semibold text-gray-800 text-sm mt-1.5">{notif.title}</p>
-        <p className="text-sm text-gray-600 mt-0.5 leading-relaxed">{notif.body}</p>
+        <p
+          className="font-display text-[14px] text-[var(--color-fg)] mt-1"
+          style={{ fontVariationSettings: "'opsz' 36, 'WONK' 0", fontWeight: 540 }}
+        >
+          {notif.title}
+        </p>
+        <p className="text-[12px] text-[var(--color-fg-soft)] mt-1 leading-relaxed">
+          {notif.body}
+        </p>
 
         <div className="flex items-center gap-3 mt-3">
           {actionHref && (
             <Link
               href={actionHref}
               onClick={() => onRead(notif.id)}
-              className={cn(
-                'flex items-center gap-1 text-xs font-medium transition-colors hover:opacity-80',
-                notif.read ? 'text-gray-500' : cfg.linkText,
-              )}
+              className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-[0.14em] hover:opacity-80 transition-opacity"
+              style={{ color: notif.read ? 'var(--color-fg-mute)' : cfg.color }}
             >
-              View directive <ArrowRight size={11} />
+              View directive <ArrowRight size={10} />
             </Link>
           )}
           {!notif.read && (
             <button
               onClick={() => onRead(notif.id)}
-              className="flex items-center gap-1 text-xs text-gray-400 hover:text-gray-600 transition-colors ml-auto"
+              className="ml-auto inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-[0.14em] text-[var(--color-fg-mute)] hover:text-[var(--color-fg)] transition-colors"
             >
-              <Check size={12} /> Mark read
+              <Check size={11} /> Mark read
             </button>
           )}
           {notif.read && (
-            <span className="ml-auto text-[11px] text-gray-300 font-mono flex items-center gap-1">
-              <Check size={10} /> Read
+            <span className="ml-auto text-[10px] text-[var(--color-fg-fade)] font-mono inline-flex items-center gap-1">
+              <Check size={9} /> Read
             </span>
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -241,22 +243,32 @@ export default function NotificationsPage() {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in max-w-3xl">
+    <div className="space-y-6 animate-page-enter max-w-3xl">
       {/* Header */}
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="font-display text-3xl font-bold text-gray-900 flex items-center gap-3">
+          <div className="text-[10px] font-mono uppercase tracking-[0.22em] text-[var(--color-fg-mute)] mb-1">
+            §07 · Bulletins
+          </div>
+          <h1 className="headline-md text-[28px] flex items-center gap-3">
             <div className="relative">
-              <Bell size={28} className="text-amber-500" />
+              <Bell size={26} className="text-[var(--color-saffron)]" />
               {notificationCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                <span
+                  className="absolute -top-1 -right-1 w-4 h-4 text-[9px] font-bold rounded-full flex items-center justify-center"
+                  style={{
+                    background: 'var(--color-vermilion)',
+                    color: '#FFF',
+                    boxShadow: '0 0 8px rgba(228,94,110,0.5)',
+                  }}
+                >
                   {notificationCount > 9 ? '9+' : notificationCount}
                 </span>
               )}
             </div>
             Notifications
           </h1>
-          <p className="text-gray-500 text-sm mt-1">
+          <p className="text-[12px] text-[var(--color-fg-soft)] mt-2">
             {notificationCount > 0
               ? `${notificationCount} unread — court-mandated actions require attention`
               : 'All caught up — no unread notifications'}
@@ -264,13 +276,14 @@ export default function NotificationsPage() {
         </div>
 
         {notificationCount > 0 && (
-          <button
+          <Button
+            variant="secondary"
+            size="md"
+            iconLeft={<BellOff size={13} />}
             onClick={markAllRead}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 bg-white text-sm text-gray-600 hover:bg-gray-50 transition-colors font-medium shrink-0"
           >
-            <BellOff size={15} />
             Mark all read
-          </button>
+          </Button>
         )}
       </div>
 
@@ -281,52 +294,60 @@ export default function NotificationsPage() {
             const count = notifications.filter((n) => n.type === type && !n.read).length;
             if (count === 0) return null;
             const cfg = TYPE_CONFIG[type];
+            const isActive = filter === type;
             return (
               <button
                 key={type}
                 onClick={() => setFilter(type)}
-                className={cn(
-                  'p-3 rounded-xl border text-left transition-all hover:shadow-sm',
-                  filter === type
-                    ? cn(cfg.cardBg, cfg.cardBorder)
-                    : 'bg-white border-gray-100 hover:border-gray-200',
-                )}
+                className="card p-3 text-left transition-all hover:-translate-y-0.5"
+                style={{
+                  borderColor: isActive ? cfg.border : 'var(--color-rule)',
+                  background: isActive ? cfg.bg : 'var(--color-ink-2)',
+                }}
               >
-                <div className={cn('text-xl font-bold font-mono', cfg.chipText)}>{count}</div>
-                <div className="text-xs text-gray-500 mt-0.5">{label}</div>
+                <div
+                  className="text-[20px] font-display font-semibold numerals-tab"
+                  style={{
+                    color: cfg.color,
+                    fontVariationSettings: "'opsz' 96, 'WONK' 1",
+                  }}
+                >
+                  {count}
+                </div>
+                <div className="text-[10px] font-mono uppercase tracking-[0.14em] text-[var(--color-fg-mute)] mt-0.5">
+                  {label}
+                </div>
               </button>
             );
           })}
         </div>
       )}
 
-      {/* Filter tabs */}
-      <div className="flex items-center gap-1 flex-wrap border-b border-gray-100 pb-3">
+      {/* Filter tabs (chips) */}
+      <div className="flex items-center gap-2 flex-wrap pb-3 border-b border-[var(--color-rule)]">
         {FILTER_TABS.map((tab) => {
           const count = counts[tab.value] ?? 0;
           return (
-            <button
+            <Chip
               key={tab.value}
+              active={filter === tab.value}
               onClick={() => setFilter(tab.value)}
-              className={cn(
-                'flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all',
-                filter === tab.value
-                  ? 'bg-gray-900 text-white shadow-sm'
-                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50',
-              )}
             >
               {tab.label}
               {count > 0 && (
                 <span
-                  className={cn(
-                    'text-[11px] font-mono px-1.5 py-0.5 rounded-full min-w-[20px] text-center',
-                    filter === tab.value ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500',
-                  )}
+                  className="text-[9px] font-mono px-1 py-0 rounded-[2px] ml-0.5"
+                  style={{
+                    background:
+                      filter === tab.value
+                        ? 'rgba(0,0,0,0.2)'
+                        : 'rgba(242,235,216,0.06)',
+                  }}
                 >
                   {count}
                 </span>
               )}
-            </button>
+            </Chip>
           );
         })}
       </div>
@@ -334,19 +355,22 @@ export default function NotificationsPage() {
       {/* Notification list */}
       <div className="space-y-3">
         {filtered.length === 0 && (
-          <div className="text-center py-16">
-            <BellOff size={40} className="mx-auto mb-3 text-gray-200" />
-            <p className="text-gray-400 font-medium">
+          <div className="card p-16 text-center">
+            <BellOff size={36} className="mx-auto mb-3 text-[var(--color-fg-mute)] opacity-50" />
+            <p className="font-display text-[16px] text-[var(--color-fg-soft)]">
               {filter === 'unread' ? 'All caught up!' : 'No notifications in this category'}
             </p>
-            <p className="text-gray-300 text-sm mt-1">Nothing to show here</p>
+            <p className="text-[10px] font-mono mt-1 text-[var(--color-fg-mute)] uppercase tracking-[0.14em]">
+              Nothing to show here
+            </p>
           </div>
         )}
-        {filtered.map((notif) => (
+        {filtered.map((notif, i) => (
           <NotificationItem
             key={notif.id}
             notif={notif}
             onRead={markNotificationRead}
+            index={i}
           />
         ))}
       </div>

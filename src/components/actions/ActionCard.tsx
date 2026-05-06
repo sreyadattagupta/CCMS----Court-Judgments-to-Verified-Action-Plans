@@ -1,12 +1,25 @@
 'use client';
 
 import Link from 'next/link';
-import { formatDate, formatDateRelative, getDaysUntilDeadline, truncate } from '@/lib/utils';
+import { motion } from 'framer-motion';
+import {
+  formatDate,
+  formatDateRelative,
+  getDaysUntilDeadline,
+  truncate,
+} from '@/lib/utils';
 import { ActionItem } from '@/types/action';
 import StatusBadge from '@/components/shared/StatusBadge';
-import ConfidenceBadge from '@/components/shared/ConfidenceBadge';
+import ConfidenceDot from '@/components/shared/ConfidenceDot';
+import TierBadge from '@/components/shared/TierBadge';
 import DepartmentTag from '@/components/shared/DepartmentTag';
-import { Calendar, User, ArrowRight, FileText } from 'lucide-react';
+import {
+  Calendar,
+  User,
+  ArrowRight,
+  FileText,
+  AlertTriangle,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { DEPARTMENT_COLORS } from '@/types/department';
 
@@ -17,95 +30,141 @@ interface ActionCardProps {
   highlighted?: boolean;
 }
 
+function scoreToLevel(score: number): 'high' | 'medium' | 'low' {
+  if (score >= 0.85) return 'high';
+  if (score >= 0.7) return 'medium';
+  return 'low';
+}
+
 export default function ActionCard({ action, compact = false, onClick, highlighted }: ActionCardProps) {
   const daysLeft = getDaysUntilDeadline(action.deadline_iso);
   const isOverdue = daysLeft !== null && daysLeft < 0;
   const isUrgent = daysLeft !== null && daysLeft >= 0 && daysLeft <= 3;
-  const deptColor = DEPARTMENT_COLORS[action.department] || '#6B7280';
+  const deptColor = DEPARTMENT_COLORS[action.department] || '#6B7886';
+  const level = action.confidence_level ?? scoreToLevel(action.confidence);
 
   return (
-    <div
+    <motion.article
+      whileHover={{ y: -3 }}
+      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
       className={cn(
-        'card action-card-hover p-4 cursor-pointer border-l-4 transition-all duration-200',
-        highlighted && 'ring-2 ring-amber-400/50',
+        'card action-card-hover p-5 cursor-pointer relative group',
+        highlighted && 'ring-1 ring-[var(--color-saffron)]/60',
+        action.tier === 'C' && 'ring-1 ring-amber-300/50'
       )}
-      style={{ borderLeftColor: deptColor }}
       onClick={onClick}
       role="article"
       aria-label={`Action: ${action.directive_text.slice(0, 60)}...`}
     >
-      {/* Top row */}
+      {/* Left ink-rule accent — newspaper-module convention */}
+      <span
+        aria-hidden="true"
+        className="absolute left-0 top-3 bottom-3 w-[3px] rounded-r-sm transition-opacity duration-300 group-hover:opacity-100"
+        style={{ background: deptColor, opacity: 0.85 }}
+      />
+
+      {/* Eyebrow strip — case + date + tier */}
+      <div className="flex items-center gap-2 mb-2 pl-2 -ml-2 flex-wrap">
+        {action.judgment && (
+          <Link
+            href={`/judgments/${action.judgment_id}`}
+            className="text-[10px] font-mono font-semibold tracking-[0.08em] text-[var(--color-azure)] hover:text-[var(--color-saffron)] transition-colors inline-flex items-center gap-1"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <FileText size={10} strokeWidth={2.4} />
+            {action.judgment.case_number}
+          </Link>
+        )}
+        <span className="text-[10px] font-mono text-[var(--color-ink-mute)]">·</span>
+        <span className="text-[10px] font-mono text-[var(--color-ink-mute)]">
+          p.{action.source_page}
+          {action.evidence_spans?.[0]?.paragraph_num != null && ` ¶${action.evidence_spans[0].paragraph_num}`}
+        </span>
+        {action.tier && (
+          <span className="ml-auto">
+            <TierBadge tier={action.tier} />
+          </span>
+        )}
+      </div>
+
+      {/* Top row — dept, status, confidence */}
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex flex-wrap gap-2 items-center">
           <DepartmentTag department={action.department} size="sm" />
           <StatusBadge status={action.status} size="sm" />
-          <span
-            className={cn(
-              'badge text-[11px]',
-              action.priority === 'high' && 'bg-red-50 text-red-600',
-              action.priority === 'medium' && 'bg-amber-50 text-amber-700',
-              action.priority === 'low' && 'bg-gray-50 text-gray-500',
-            )}
-            aria-label={`Priority: ${action.priority}`}
-          >
-            {action.priority.charAt(0).toUpperCase() + action.priority.slice(1)}
-          </span>
+          {action.requires_legal_opinion && (
+            <span
+              title="Flagged: requires legal opinion before commit"
+              className="inline-flex items-center gap-1 rounded-[2px] px-1.5 py-0.5 text-[10px] font-mono uppercase tracking-[0.08em]"
+              style={{
+                background: 'rgba(231,140,45,0.1)',
+                color: '#F0A04A',
+                border: '1px solid rgba(231,140,45,0.32)',
+                boxShadow: '0 0 8px rgba(231,140,45,0.15)',
+              }}
+            >
+              <AlertTriangle size={10} /> Legal
+            </span>
+          )}
         </div>
-        <ConfidenceBadge score={action.confidence} size="sm" showScore={false} />
+        <ConfidenceDot
+          level={level}
+          breakdown={action.confidence_breakdown}
+          size="sm"
+        />
       </div>
 
-      {/* Directive text */}
-      <p className="text-sm text-gray-800 leading-relaxed mb-3 font-medium">
+      {/* Directive — set in serif, like a pull quote */}
+      <p
+        className="font-display text-[15px] leading-[1.45] text-[var(--color-ink)]"
+        style={{
+          fontVariationSettings: "'opsz' 36, 'WONK' 0",
+          fontWeight: 460,
+        }}
+      >
         {compact ? truncate(action.directive_text, 140) : action.directive_text}
       </p>
 
-      {/* Meta row */}
-      <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500">
-        {action.deadline_iso && (
+      {/* Section rule */}
+      <div className="my-3 h-px bg-[var(--color-divider)]" />
+
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-[var(--color-ink-mute)] font-mono">
+        {action.deadline_iso ? (
           <span
             className={cn(
-              'flex items-center gap-1 font-mono',
-              isOverdue && 'text-red-600 font-semibold',
-              isUrgent && !isOverdue && 'text-amber-600 font-semibold',
+              'flex items-center gap-1.5',
+              isOverdue && 'text-[var(--color-vermilion)] font-semibold',
+              isUrgent && !isOverdue && 'text-[var(--color-saffron)] font-semibold'
             )}
-            aria-label={`Deadline: ${formatDate(action.deadline_iso)}`}
+            aria-label={`Deadline ${formatDate(action.deadline_iso)}`}
           >
-            <Calendar size={12} />
+            <Calendar size={11} />
             {formatDateRelative(action.deadline_iso)}
           </span>
-        )}
-        {action.assigned_to && (
-          <span className="flex items-center gap-1">
-            <User size={12} />
-            {action.assigned_to}
+        ) : action.deadline_confidence === 'REQUIRES_LEGAL_OPINION' ? (
+          <span className="flex items-center gap-1.5 text-[var(--color-saffron)]">
+            <AlertTriangle size={11} />
+            Deadline ambiguous
           </span>
-        )}
-        {action.judgment && (
-          <span className="flex items-center gap-1 text-blue-600">
-            <FileText size={12} />
-            {action.judgment.case_number}
-          </span>
-        )}
-        <span className="ml-auto text-gray-400 font-mono text-[11px]">
-          p.{action.source_page}
-        </span>
-      </div>
+        ) : null}
 
-      {/* Link to detail */}
-      {!compact && (
-        <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
-          <span className="text-xs text-gray-400">
-            Confidence: <span className="font-mono font-medium text-gray-600">{Math.round(action.confidence * 100)}%</span>
+        {action.assigned_to && (
+          <span className="flex items-center gap-1.5">
+            <User size={11} />
+            <span className="truncate max-w-[14ch]">{action.assigned_to}</span>
           </span>
+        )}
+
+        {!compact && (
           <Link
             href={`/actions/${action.id}`}
-            className="flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-800 transition-colors"
+            className="ml-auto inline-flex items-center gap-1 text-[var(--color-azure)] hover:text-[var(--color-saffron)] transition-colors"
             onClick={(e) => e.stopPropagation()}
           >
-            View detail <ArrowRight size={12} />
+            Read brief <ArrowRight size={10} />
           </Link>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </motion.article>
   );
 }

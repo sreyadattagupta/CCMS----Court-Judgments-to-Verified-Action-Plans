@@ -5,13 +5,22 @@ import Topbar from '@/components/shared/Topbar';
 import Providers from './providers';
 
 export const metadata: Metadata = {
-  title: 'JudgmentOS — Court Compliance Management System',
+  title: 'SAMIKSHA · CCMS — Karnataka High Court',
   description:
-    'Transform raw court judgment PDFs into structured, verified, department-wise action plans with real-time compliance tracking.',
-  keywords: ['court compliance', 'judgment management', 'legal tech', 'CCMS', 'India judiciary'],
+    'AI-assisted, human-verified decision support for Karnataka\'s Court Case Monitoring System. Court judgments → verified, citation-grounded action plans.',
+  keywords: [
+    'SAMIKSHA',
+    'CCMS',
+    'Karnataka High Court',
+    'court compliance',
+    'judgment extraction',
+    'human-in-the-loop',
+    'legal tech',
+  ],
   openGraph: {
-    title: 'JudgmentOS — CCMS',
-    description: 'AI-powered court compliance management for the Indian judiciary',
+    title: 'SAMIKSHA · CCMS',
+    description:
+      'Smart AI for Monitoring, Interpretation & Knowledge from Court orders — Karnataka HC + CCMS.',
     type: 'website',
   },
 };

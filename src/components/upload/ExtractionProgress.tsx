@@ -15,83 +15,129 @@ export default function ExtractionProgressStepper({ progress }: ExtractionProgre
   const currentIdx = stepIndex(progress.step);
 
   return (
-    <div className="card p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="font-display font-semibold text-gray-800">Extraction Pipeline</h3>
+    <div className="card card-paper p-6">
+      <div className="flex items-center justify-between mb-5">
+        <div>
+          <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-fg-mute)] mb-1">
+            Pipeline
+          </div>
+          <h3 className="headline-md text-[16px]">Extraction in progress</h3>
+        </div>
         {progress.extracted_count !== undefined && (
-          <span className="text-sm font-mono text-gray-500">
+          <span
+            className="text-[11px] font-mono px-2 py-1 rounded-[2px] border"
+            style={{
+              borderColor: 'rgba(231,140,45,0.3)',
+              color: '#F0A04A',
+              background: 'rgba(231,140,45,0.06)',
+            }}
+          >
             {progress.extracted_count} actions found
           </span>
         )}
       </div>
 
       {/* Overall progress bar */}
-      <div className="w-full h-2 bg-gray-100 rounded-full mb-6 overflow-hidden">
+      <div
+        className="w-full h-1 rounded-[1px] mb-6 overflow-hidden"
+        style={{ background: 'var(--color-ink-3)' }}
+      >
         <div
-          className="h-full rounded-full transition-all duration-500"
+          className="h-full rounded-[1px] transition-all duration-500"
           style={{
             width: `${progress.progress}%`,
-            background: progress.step === 'error'
-              ? 'var(--color-crimson)'
-              : 'linear-gradient(90deg, var(--color-saffron), var(--color-verdant))',
+            background:
+              progress.step === 'error'
+                ? 'var(--color-vermilion)'
+                : 'linear-gradient(90deg, var(--color-saffron), var(--color-verdant))',
+            boxShadow:
+              progress.step === 'error'
+                ? '0 0 12px rgba(228,94,110,0.5)'
+                : '0 0 12px var(--color-saffron-glow)',
           }}
         />
       </div>
 
       {/* Steps */}
-      <div className="space-y-4">
-        {EXTRACTION_STEPS.filter(s => s.key !== 'error').map((step, idx) => {
+      <div className="space-y-3">
+        {EXTRACTION_STEPS.filter((s) => s.key !== 'error').map((step, idx) => {
           const isDone = currentIdx > idx || progress.step === 'complete';
           const isCurrent = progress.step === step.key;
           const isError = progress.step === 'error' && isCurrent;
           const isPending = currentIdx < idx && progress.step !== 'complete';
 
           return (
-            <div key={step.key} className="stepper-step">
+            <div
+              key={step.key}
+              className="flex items-center gap-3 transition-opacity duration-300"
+              style={{ opacity: isPending ? 0.45 : 1 }}
+            >
               <div
-                className={cn(
-                  'stepper-circle',
-                  isDone && 'bg-green-100 text-green-600',
-                  isCurrent && !isError && 'bg-amber-100 text-amber-600 ring-2 ring-amber-300',
-                  isError && 'bg-red-100 text-red-600',
-                  isPending && 'bg-gray-100 text-gray-400',
-                )}
+                className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-all"
+                style={{
+                  background: isDone
+                    ? 'rgba(79,168,130,0.12)'
+                    : isCurrent && !isError
+                      ? 'rgba(231,140,45,0.12)'
+                      : isError
+                        ? 'rgba(228,94,110,0.12)'
+                        : 'rgba(242,235,216,0.04)',
+                  color: isDone
+                    ? '#5DBC95'
+                    : isCurrent && !isError
+                      ? '#F0A04A'
+                      : isError
+                        ? '#F08593'
+                        : 'var(--color-fg-mute)',
+                  boxShadow:
+                    isCurrent && !isError ? '0 0 0 2px var(--color-saffron-glow)' : 'none',
+                  border: '1px solid currentColor',
+                  borderColor: isDone
+                    ? 'rgba(79,168,130,0.3)'
+                    : isCurrent && !isError
+                      ? 'rgba(231,140,45,0.4)'
+                      : isError
+                        ? 'rgba(228,94,110,0.4)'
+                        : 'var(--color-rule)',
+                }}
               >
                 {isDone ? (
-                  <CheckCircle2 size={16} />
+                  <CheckCircle2 size={14} />
                 ) : isCurrent && !isError ? (
-                  <Loader2 size={16} className="animate-spin" />
+                  <Loader2 size={14} className="animate-spin" />
                 ) : isError ? (
-                  <XCircle size={16} />
+                  <XCircle size={14} />
                 ) : (
-                  <Circle size={16} />
+                  <Circle size={14} />
                 )}
               </div>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <div
                   className={cn(
-                    'text-sm font-medium',
-                    isDone && 'text-green-700',
-                    isCurrent && !isError && 'text-amber-700',
-                    isError && 'text-red-600',
-                    isPending && 'text-gray-400',
+                    'text-[13px]',
+                    isDone && 'text-[var(--color-verdant)]',
+                    isCurrent && !isError && 'text-[var(--color-saffron)] font-semibold',
+                    isError && 'text-[var(--color-vermilion)]',
+                    isPending && 'text-[var(--color-fg-mute)]'
                   )}
                 >
                   {step.label}
                 </div>
                 {isCurrent && progress.message && (
-                  <div className="text-xs text-gray-500 mt-0.5 font-mono">
+                  <div className="text-[11px] text-[var(--color-fg-mute)] mt-0.5 font-mono">
                     {progress.message}
                   </div>
                 )}
               </div>
               {isCurrent && !isError && (
-                <span className="text-xs font-mono text-amber-600 font-semibold">
+                <span className="text-[11px] font-mono numerals-tab font-semibold" style={{ color: '#F0A04A' }}>
                   {progress.progress}%
                 </span>
               )}
               {isDone && (
-                <span className="text-xs font-mono text-green-600">✓</span>
+                <span className="text-[10px] font-mono" style={{ color: '#5DBC95' }}>
+                  ✓
+                </span>
               )}
             </div>
           );
@@ -99,7 +145,14 @@ export default function ExtractionProgressStepper({ progress }: ExtractionProgre
       </div>
 
       {progress.step === 'error' && progress.error && (
-        <div className="mt-4 p-3 bg-red-50 rounded-lg border border-red-200 text-sm text-red-700 font-mono">
+        <div
+          className="mt-4 p-3 rounded-[3px] text-[12px] font-mono"
+          style={{
+            background: 'rgba(228,94,110,0.06)',
+            border: '1px solid rgba(228,94,110,0.3)',
+            color: '#F08593',
+          }}
+        >
           Error: {progress.error}
         </div>
       )}

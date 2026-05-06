@@ -1,3 +1,12 @@
+import type {
+  ConfidenceBreakdown,
+  ConfidenceLevel,
+  DeadlineConfidence,
+  DirectiveType,
+  EvidenceSpan,
+  Tier,
+} from './samiksha';
+
 export type ActionStatus =
   | 'pending_verification'
   | 'verified'
@@ -28,7 +37,25 @@ export interface ActionItem {
   source_text: string;
   source_page: number;
   source_bbox?: SourceBBox;
+  // SAMIKSHA confidence model.  `confidence` (0..1) stays for sorting and the
+  // legacy demo views, but the UI must render `confidence_level` (RAG dot)
+  // and `confidence_breakdown` (signal tooltip) per SPEC §6.
   confidence: number;
+  confidence_level?: ConfidenceLevel;
+  confidence_breakdown?: ConfidenceBreakdown;
+  // Tier classification — drives auto-commit + reviewer-gate behavior.
+  tier?: Tier;
+  directive_type?: DirectiveType;
+  // Provenance — every field must carry a source-span pointer.
+  evidence_spans?: EvidenceSpan[];
+  // Deadline metadata is computed deterministically against the Limitation
+  // Act 1963 lookup table — never by the LLM (SPEC §5).
+  deadline_basis?: string;
+  deadline_confidence?: DeadlineConfidence;
+  appeal_deadline_iso?: string;
+  appeal_deadline_basis?: string;
+  appeal_deadline_confidence?: DeadlineConfidence;
+  requires_legal_opinion?: boolean;
   priority: ActionPriority;
   status: ActionStatus;
   assigned_to?: string;

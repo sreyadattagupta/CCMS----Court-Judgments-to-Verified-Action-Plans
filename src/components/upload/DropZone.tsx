@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react';
 import { useDropzone, FileRejection } from 'react-dropzone';
 import { Upload, FileText, X, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { IconButton } from '@/components/shared/Button';
 
 interface DropZoneProps {
   onFileAccepted: (file: File) => void;
@@ -46,23 +47,35 @@ export default function DropZone({ onFileAccepted, disabled, maxSizeMB = 50 }: D
 
   if (file) {
     return (
-      <div className="card p-5 flex items-center gap-4 border-green-200 bg-green-50/50">
-        <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
-          <FileText size={22} className="text-green-600" />
+      <div
+        className="card p-5 flex items-center gap-4"
+        style={{
+          background: 'rgba(79,168,130,0.06)',
+          borderColor: 'rgba(79,168,130,0.32)',
+        }}
+      >
+        <div
+          className="w-12 h-12 rounded-[3px] flex items-center justify-center flex-shrink-0"
+          style={{
+            background: 'rgba(79,168,130,0.12)',
+            color: '#5DBC95',
+            border: '1px solid rgba(79,168,130,0.28)',
+          }}
+        >
+          <FileText size={20} />
         </div>
         <div className="flex-1 min-w-0">
-          <div className="font-semibold text-gray-800 truncate">{file.name}</div>
-          <div className="text-sm text-gray-500 font-mono">
+          <div className="font-display text-[14px] text-[var(--color-fg)] truncate"
+               style={{ fontVariationSettings: "'opsz' 36, 'WONK' 0", fontWeight: 500 }}>
+            {file.name}
+          </div>
+          <div className="text-[11px] text-[var(--color-fg-mute)] font-mono mt-0.5 uppercase tracking-[0.1em]">
             {(file.size / 1024 / 1024).toFixed(2)} MB · PDF
           </div>
         </div>
-        <button
-          onClick={clear}
-          className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors"
-          aria-label="Remove file"
-        >
-          <X size={16} className="text-gray-500" />
-        </button>
+        <IconButton onClick={clear} aria-label="Remove file" tone="danger" size="sm">
+          <X size={14} />
+        </IconButton>
       </div>
     );
   }
@@ -83,31 +96,52 @@ export default function DropZone({ onFileAccepted, disabled, maxSizeMB = 50 }: D
         <input {...getInputProps()} aria-hidden="true" />
         <div
           className={cn(
-            'w-16 h-16 rounded-2xl flex items-center justify-center mb-4 transition-transform duration-200',
-            isDragActive ? 'scale-110' : ''
+            'w-16 h-16 rounded-[3px] flex items-center justify-center mb-4 transition-transform duration-300',
+            isDragActive && 'scale-110 rotate-3'
           )}
-          style={{ background: isDragActive ? 'rgba(212,131,26,0.12)' : '#F5F0E8' }}
+          style={{
+            background: isDragActive
+              ? 'rgba(231,140,45,0.12)'
+              : 'rgba(242,235,216,0.04)',
+            border: isDragActive
+              ? '1px solid rgba(231,140,45,0.4)'
+              : '1px solid var(--color-rule)',
+            boxShadow: isDragActive ? '0 0 30px var(--color-saffron-glow)' : 'none',
+          }}
         >
           <Upload
-            size={28}
-            style={{ color: isDragActive ? 'var(--color-saffron)' : '#9CA3AF' }}
+            size={26}
+            style={{
+              color: isDragActive ? 'var(--color-saffron)' : 'var(--color-fg-mute)',
+            }}
+            strokeWidth={1.6}
           />
         </div>
 
-        <p className="text-base font-semibold text-gray-700 mb-1">
+        <p className="font-display text-[16px] text-[var(--color-fg)] mb-1"
+           style={{ fontVariationSettings: "'opsz' 36, 'WONK' 1", fontWeight: 540 }}>
           {isDragActive ? 'Drop your PDF here' : 'Drag & drop judgment PDF'}
         </p>
-        <p className="text-sm text-gray-400 mb-3">
+        <p className="text-[12px] text-[var(--color-fg-soft)] mb-3">
           or{' '}
-          <span style={{ color: 'var(--color-saffron)' }} className="font-medium cursor-pointer hover:underline">
+          <span className="text-[var(--color-saffron)] font-medium cursor-pointer hover:underline underline-offset-2">
             browse to upload
           </span>
         </p>
-        <p className="text-xs text-gray-400 font-mono">PDF only · max {maxSizeMB}MB</p>
+        <p className="text-[10px] text-[var(--color-fg-mute)] font-mono uppercase tracking-[0.18em]">
+          PDF only · max {maxSizeMB}MB
+        </p>
       </div>
       {error && (
-        <div className="mt-2 flex items-center gap-2 text-red-600 text-sm">
-          <AlertCircle size={14} />
+        <div
+          className="mt-3 flex items-center gap-2 text-[12px] font-mono px-3 py-2 rounded-[3px]"
+          style={{
+            background: 'rgba(228,94,110,0.06)',
+            color: '#F08593',
+            border: '1px solid rgba(228,94,110,0.3)',
+          }}
+        >
+          <AlertCircle size={12} />
           {error}
         </div>
       )}
