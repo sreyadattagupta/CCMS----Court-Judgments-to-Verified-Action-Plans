@@ -9,7 +9,8 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { Search, X } from 'lucide-react';
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'prefix'> {
   label?: string;
   hint?: string;
   error?: string;
@@ -112,7 +113,8 @@ export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
 
 /* ── Select (native, restyled) ───────────────────────────────────────── */
 
-interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectProps
+  extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
   label?: string;
   size?: 'sm' | 'md';
   options?: { value: string; label: string }[];

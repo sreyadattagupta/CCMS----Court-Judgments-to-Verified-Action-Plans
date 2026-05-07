@@ -13,7 +13,7 @@ import {
   DEMO_JUDGMENTS,
   DEMO_DEPARTMENT_STATS,
 } from '@/lib/demo-data';
-import { formatDate } from '@/lib/utils';
+import { formatDate, EASE_PAPER } from '@/lib/utils';
 import Link from 'next/link';
 import {
   ArrowRight,
@@ -88,7 +88,7 @@ export default function DashboardPage() {
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-10%' }}
-                transition={{ duration: 0.6, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.6, delay: i * 0.06, ease: EASE_PAPER }}
               >
                 <Link
                   href={`/departments/${encodeURIComponent(dept.department)}`}
@@ -134,7 +134,7 @@ export default function DashboardPage() {
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-10%' }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.7, ease: EASE_PAPER }}
               className="card card-paper p-7 md:p-9 relative"
             >
               <Quote
@@ -189,7 +189,7 @@ export default function DashboardPage() {
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-10%' }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.7, ease: EASE_PAPER }}
               className="card card-paper p-5 border-[var(--color-vermilion)]/40 bg-[#FBE7E9]/40"
             >
               <h3 className="font-display font-semibold text-[var(--color-vermilion)] text-[15px] mb-3 flex items-center gap-2 uppercase tracking-[0.08em]">
@@ -273,7 +273,7 @@ export default function DashboardPage() {
                           initial={{ width: 0 }}
                           whileInView={{ width: `${compliancePct}%` }}
                           viewport={{ once: true }}
-                          transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                          transition={{ duration: 1, delay: 0.2, ease: EASE_PAPER }}
                         />
                       </div>
                       <span

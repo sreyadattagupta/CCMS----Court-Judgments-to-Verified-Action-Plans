@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import { motion, useInView, animate } from 'framer-motion';
 import { FileText, ListChecks, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { DEMO_ACTIONS, DEMO_JUDGMENTS } from '@/lib/demo-data';
+import { EASE_PAPER } from '@/lib/utils';
 
 const totalJudgments = DEMO_JUDGMENTS.length;
 const totalActions = DEMO_ACTIONS.length;
@@ -91,7 +92,7 @@ function CountUp({ to, suffix = '' }: { to: number; suffix?: string }) {
     if (!inView) return;
     const controls = animate(0, to, {
       duration: 1.2,
-      ease: [0.16, 1, 0.3, 1],
+      ease: EASE_PAPER,
       onUpdate: (v) => setDisplay(Math.round(v)),
     });
     return () => controls.stop();
@@ -147,7 +148,7 @@ function Sparkline({ values, color }: { values: number[]; color: string }) {
         strokeLinejoin="round"
         initial={{ pathLength: 0 }}
         animate={inView ? { pathLength: 1 } : { pathLength: 0 }}
-        transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 1.2, delay: 0.3, ease: EASE_PAPER }}
       />
       {/* End-point dot */}
       <motion.circle
@@ -175,7 +176,7 @@ function StatModule({ stat, index }: { stat: Stat; index: number }) {
       initial={{ opacity: 0, y: 22 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-15%' }}
-      transition={{ duration: 0.7, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.7, delay: index * 0.08, ease: EASE_PAPER }}
       whileHover={{ y: -3 }}
       className="card card-paper p-5 relative overflow-hidden"
     >

@@ -8,6 +8,7 @@
 import { useMemo, useState, useRef } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { DEMO_ACTIONS } from '@/lib/demo-data';
+import { EASE_PAPER } from '@/lib/utils';
 
 const TODAY = new Date('2026-05-07');
 const WEEKS_BACK = 8;
@@ -204,7 +205,7 @@ export default function DeadlineHeatmap() {
                       transition={{
                         duration: 0.45,
                         delay: 0.005 * (wIdx * 7 + dIdx),
-                        ease: [0.16, 1, 0.3, 1],
+                        ease: EASE_PAPER,
                       }}
                       onMouseEnter={() => hasData && setHover(cell)}
                       onMouseLeave={() => setHover(null)}

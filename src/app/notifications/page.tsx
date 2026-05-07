@@ -16,7 +16,7 @@ import {
   ArrowRight,
   Check,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, EASE_PAPER } from '@/lib/utils';
 import Button from '@/components/shared/Button';
 import { Chip } from '@/components/shared/Input';
 
@@ -114,7 +114,7 @@ function NotificationItem({
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.04, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.4, delay: index * 0.04, ease: EASE_PAPER }}
       className={cn(
         'flex gap-4 p-4 rounded-[3px] border transition-all duration-200',
         notif.read

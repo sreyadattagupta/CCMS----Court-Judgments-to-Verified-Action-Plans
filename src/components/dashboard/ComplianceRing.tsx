@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, animate } from 'framer-motion';
+import { EASE_PAPER } from '@/lib/utils';
 
 interface ComplianceRingProps {
   percentage: number;
@@ -33,7 +34,7 @@ export default function ComplianceRing({
     if (!shouldAnimate || !inView) return;
     const controls = animate(0, percentage, {
       duration: 1.4,
-      ease: [0.16, 1, 0.3, 1],
+      ease: EASE_PAPER,
       onUpdate: (v) => setDisplay(Math.round(v)),
     });
     return () => controls.stop();
@@ -84,7 +85,7 @@ export default function ComplianceRing({
           animate={
             inView ? { strokeDashoffset: offset } : { strokeDashoffset: circumference }
           }
-          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+          transition={{ duration: 1.4, ease: EASE_PAPER, delay: 0.1 }}
           style={{ transform: 'rotate(-90deg)', transformOrigin: 'center' }}
         />
         {/* Tip dot */}

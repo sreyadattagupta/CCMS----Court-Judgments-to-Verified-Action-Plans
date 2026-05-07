@@ -9,6 +9,7 @@ import { useMemo, useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { DEMO_ACTIONS } from '@/lib/demo-data';
 import { DEPARTMENT_COLORS } from '@/types/department';
+import { EASE_PAPER } from '@/lib/utils';
 
 const W = 880;
 const H = 320;
@@ -199,7 +200,7 @@ export default function DirectiveFlow() {
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={inView ? { pathLength: 1, opacity: dimmed ? 0.06 : 0.85 } : {}}
                   transition={{
-                    pathLength: { duration: 1.4, delay: 0.2 + i * 0.06, ease: [0.16, 1, 0.3, 1] },
+                    pathLength: { duration: 1.4, delay: 0.2 + i * 0.06, ease: EASE_PAPER },
                     opacity: { duration: 0.3 },
                   }}
                 >
@@ -228,7 +229,7 @@ export default function DirectiveFlow() {
                     fill={DEPARTMENT_COLORS[n.name] ?? '#6B7886'}
                     initial={{ scaleY: 0, opacity: 0 }}
                     animate={inView ? { scaleY: 1, opacity: dimmed ? 0.25 : 1 } : {}}
-                    transition={{ duration: 0.7, delay: 0.1 + i * 0.04, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.7, delay: 0.1 + i * 0.04, ease: EASE_PAPER }}
                     style={{ transformOrigin: `${n.x + NODE_W / 2}px ${n.y + n.h / 2}px` }}
                   />
                   <motion.text
@@ -284,7 +285,7 @@ export default function DirectiveFlow() {
                     fill={STATUS_TONE[n.name] ?? '#5A5564'}
                     initial={{ scaleY: 0, opacity: 0 }}
                     animate={inView ? { scaleY: 1, opacity: dimmed ? 0.25 : 1 } : {}}
-                    transition={{ duration: 0.7, delay: 0.2 + i * 0.04, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.7, delay: 0.2 + i * 0.04, ease: EASE_PAPER }}
                     style={{ transformOrigin: `${n.x + NODE_W / 2}px ${n.y + n.h / 2}px` }}
                   />
                   <motion.text

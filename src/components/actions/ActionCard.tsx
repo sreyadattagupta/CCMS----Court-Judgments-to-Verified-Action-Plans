@@ -20,7 +20,7 @@ import {
   FileText,
   AlertTriangle,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, EASE_PAPER } from '@/lib/utils';
 import { DEPARTMENT_COLORS } from '@/types/department';
 
 interface ActionCardProps {
@@ -46,7 +46,7 @@ export default function ActionCard({ action, compact = false, onClick, highlight
   return (
     <motion.article
       whileHover={{ y: -3 }}
-      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.25, ease: EASE_PAPER }}
       className={cn(
         'card action-card-hover p-5 cursor-pointer relative group',
         highlighted && 'ring-1 ring-[var(--color-saffron)]/60',

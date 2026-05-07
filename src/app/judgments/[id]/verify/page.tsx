@@ -35,8 +35,7 @@ import DepartmentTag from '@/components/shared/DepartmentTag';
 import ConfidenceDot from '@/components/shared/ConfidenceDot';
 import TierBadge from '@/components/shared/TierBadge';
 import Button from '@/components/shared/Button';
-import { formatDate } from '@/lib/utils';
-import { cn } from '@/lib/utils';
+import { formatDate, cn, EASE_STAMP } from '@/lib/utils';
 
 const REVIEWER_ID = 'registrar@karnatakajudiciary.gov.in';
 
@@ -241,7 +240,7 @@ export default function VerificationPage(props: PageProps<'/judgments/[id]/verif
                 rotate: [-22, -3, -3, -3],
                 opacity: [0, 1, 1, 0.92],
               }}
-              transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1], times: [0, 0.55, 0.72, 1] }}
+              transition={{ duration: 0.8, ease: EASE_STAMP, times: [0, 0.55, 0.72, 1] }}
               className="relative"
             >
               <div

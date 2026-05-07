@@ -5,11 +5,12 @@
 // hand-set serif headline with word-by-word reveal, animated balance-scales
 // emblem, and a live pipeline ticker beneath.
 
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, type Variants } from 'framer-motion';
 import { useRef, useMemo } from 'react';
-import { Activity, ArrowUpRight, Scale } from 'lucide-react';
+import { Activity, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
-import { DEMO_ACTIONS, DEMO_JUDGMENTS } from '@/lib/demo-data';
+import { DEMO_ACTIONS } from '@/lib/demo-data';
+import { EASE_PAPER, EASE_SWING } from '@/lib/utils';
 
 interface Props {
   todayLabel: string;
@@ -18,13 +19,13 @@ interface Props {
   compliancePct: number;
 }
 
-const REVEAL = {
+const REVEAL: Variants = {
   hidden: { opacity: 0, y: 28, filter: 'blur(6px)' },
   show: {
     opacity: 1,
     y: 0,
     filter: 'blur(0px)',
-    transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.9, ease: EASE_PAPER },
   },
 };
 
@@ -145,7 +146,7 @@ export default function MastheadHero({
                   strokeLinecap="round"
                   initial={{ pathLength: 0 }}
                   animate={inView ? { pathLength: 1 } : { pathLength: 0 }}
-                  transition={{ duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 1.2, delay: 0.5, ease: EASE_PAPER }}
                 />
               </svg>
             </em>{' '}
@@ -306,7 +307,7 @@ function Emblem({ inView }: { inView: boolean }) {
             strokeWidth="1.4"
             initial={{ pathLength: 0 }}
             animate={inView ? { pathLength: 1 } : { pathLength: 0 }}
-            transition={{ duration: 1.4, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 1.4, delay: 0.4, ease: EASE_PAPER }}
             pathLength={1}
           />
           <motion.circle
@@ -317,7 +318,7 @@ function Emblem({ inView }: { inView: boolean }) {
             opacity="0.4"
             initial={{ pathLength: 0 }}
             animate={inView ? { pathLength: 1 } : { pathLength: 0 }}
-            transition={{ duration: 1.4, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 1.4, delay: 0.6, ease: EASE_PAPER }}
             pathLength={1}
           />
           {/* 24 spokes — spinning slowly */}
@@ -354,14 +355,14 @@ function Emblem({ inView }: { inView: boolean }) {
           transform="translate(100, 100)"
           initial={{ opacity: 0, y: 14 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.9, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.9, delay: 1.2, ease: EASE_PAPER }}
         >
           {/* Pivot */}
           <line x1="0" y1="-58" x2="0" y2="-30" stroke="#F4EEDF" strokeWidth="1.4" />
           <motion.g
             initial={{ rotate: -8 }}
             animate={inView ? { rotate: [- 8, 6, -3, 2, 0] } : {}}
-            transition={{ duration: 2.2, delay: 1.4, ease: [0.45, 0, 0.55, 1] }}
+            transition={{ duration: 2.2, delay: 1.4, ease: EASE_SWING }}
             style={{ transformOrigin: '0px -58px' }}
           >
             {/* Beam */}

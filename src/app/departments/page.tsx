@@ -7,6 +7,7 @@ import { ResponsiveContainer, LineChart, Line, Tooltip } from 'recharts';
 import Link from 'next/link';
 import { Building2, ArrowRight, AlertTriangle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { EASE_PAPER } from '@/lib/utils';
 
 export default function DepartmentsPage() {
   return (
@@ -34,7 +35,7 @@ export default function DepartmentsPage() {
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-10%' }}
-              transition={{ duration: 0.6, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.6, delay: i * 0.05, ease: EASE_PAPER }}
             >
               <Link
                 href={`/departments/${encodeURIComponent(dept.department)}`}

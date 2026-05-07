@@ -15,7 +15,7 @@ import {
   ScrollText,
 } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
-import { cn } from '@/lib/utils';
+import { cn, EASE_PAPER } from '@/lib/utils';
 import { DEMO_ACTIONS } from '@/lib/demo-data';
 
 const overdueCount = DEMO_ACTIONS.filter((a) => a.status === 'overdue').length;
@@ -55,7 +55,7 @@ export default function Sidebar() {
           <motion.div
             initial={{ scale: 0.6, opacity: 0, rotate: -10 }}
             animate={{ scale: 1, opacity: 1, rotate: -3 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, ease: EASE_PAPER }}
             className="relative w-11 h-11 flex-shrink-0"
           >
             <svg viewBox="0 0 44 44" className="w-full h-full">

@@ -5,6 +5,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// Cubic-bezier easing tuples typed for framer-motion's `Easing` union.
+// Inline `[0.16, 1, 0.3, 1]` literals get inferred as `number[]` and fail
+// the type check, so we centralise them here.
+type Bezier = [number, number, number, number];
+export const EASE_PRESS: Bezier = [0.22, 1, 0.36, 1];
+export const EASE_PAPER: Bezier = [0.16, 1, 0.3, 1];
+export const EASE_STAMP: Bezier = [0.65, 0, 0.35, 1];
+export const EASE_SWING: Bezier = [0.45, 0, 0.55, 1];
+
 export function formatDate(date: string | Date | null | undefined): string {
   if (!date) return '—';
   const d = new Date(date);
