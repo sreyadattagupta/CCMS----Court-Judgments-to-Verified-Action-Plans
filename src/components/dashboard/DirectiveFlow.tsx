@@ -144,13 +144,13 @@ export default function DirectiveFlow() {
   }, []);
 
   return (
-    <section ref={ref} className="card card-paper p-6 relative">
+    <section ref={ref} className="card card-paper p-7 relative">
       <header className="flex items-end justify-between mb-5">
         <div>
           <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-ink-mute)] mb-1">
             §03 · The Flow of Compliance
           </div>
-          <h2 className="headline-md text-[24px] text-[var(--color-ink)]">
+          <h2 className="headline-md text-[24px] text-[var(--color-fg)]">
             Department <em className="font-display">→</em> Status
           </h2>
         </div>

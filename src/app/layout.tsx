@@ -37,7 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Sidebar />
           <div className="main-content">
             <Topbar />
-            <main className="p-6 max-w-[1280px] mx-auto page-enter">
+            <main className="p-8 lg:px-10 lg:py-10 max-w-[1320px] mx-auto page-enter">
               {children}
             </main>
           </div>

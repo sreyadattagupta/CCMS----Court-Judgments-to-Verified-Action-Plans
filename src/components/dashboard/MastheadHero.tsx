@@ -74,7 +74,7 @@ export default function MastheadHero({
       initial="hidden"
       animate={inView ? 'show' : 'hidden'}
       variants={{ show: { transition: { staggerChildren: 0.08 } } }}
-      className="dashboard-hero rounded-sm p-8 md:p-10 text-[var(--color-parchment)] relative"
+      className="dashboard-hero rounded-md p-10 md:p-12 text-[var(--color-fg)] relative"
     >
       <div className="hero-rule" />
       <div className="hero-grain" />
@@ -122,7 +122,7 @@ export default function MastheadHero({
 
           <motion.h1
             variants={REVEAL}
-            className="headline-xl text-[44px] md:text-[60px] lg:text-[68px] text-[var(--color-parchment)] mb-5"
+            className="headline-xl text-[44px] md:text-[60px] lg:text-[68px] text-[var(--color-fg)] mb-5"
           >
             Court orders, <em
               className="not-italic relative inline-block"
@@ -188,7 +188,7 @@ export default function MastheadHero({
             ].map((s) => (
               <div
                 key={s.label}
-                className="bg-[#0F0F18]/80 px-5 py-4 flex flex-col gap-1"
+                className="bg-[#0F0F18]/80 px-6 py-5 flex flex-col gap-1.5"
               >
                 <span className="text-[10px] uppercase tracking-[0.18em] font-mono text-white/40">
                   {s.label}
@@ -224,7 +224,7 @@ export default function MastheadHero({
       {/* ── Live pipeline ticker ────────────────────────────────── */}
       <motion.div
         variants={REVEAL}
-        className="relative z-10 mt-9 -mx-8 md:-mx-10 -mb-8 md:-mb-10 overflow-hidden border-t border-white/10 bg-black/20 backdrop-blur-[2px]"
+        className="relative z-10 mt-10 -mx-10 md:-mx-12 -mb-10 md:-mb-12 overflow-hidden border-t border-white/10 bg-black/20 backdrop-blur-[2px]"
       >
         <div className="flex items-center text-[11px] font-mono">
           <div className="flex items-center gap-2 px-4 py-2.5 bg-[#C9610A] text-[#14141C] font-bold uppercase tracking-[0.18em] flex-shrink-0">

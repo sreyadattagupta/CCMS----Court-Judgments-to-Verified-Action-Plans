@@ -133,13 +133,13 @@ export default function DeadlineHeatmap() {
   }, [weeks]);
 
   return (
-    <section ref={ref} className="card card-paper p-6 relative">
+    <section ref={ref} className="card card-paper p-7 relative">
       <header className="flex items-end justify-between mb-5">
         <div>
           <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-ink-mute)] mb-1">
             §04 · Deadline Almanac
           </div>
-          <h2 className="headline-md text-[24px] text-[var(--color-ink)]">
+          <h2 className="headline-md text-[24px] text-[var(--color-fg)]">
             When the calendar comes due
           </h2>
         </div>
@@ -250,7 +250,7 @@ export default function DeadlineHeatmap() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 8 }}
               transition={{ duration: 0.25 }}
-              className="absolute right-0 top-full mt-3 max-w-md w-full md:w-auto p-4 bg-[var(--color-ink)] text-[var(--color-parchment)] rounded-sm shadow-lg z-10"
+              className="absolute right-0 top-full mt-3 max-w-md w-full md:w-auto p-4 bg-[var(--color-ink)] text-[var(--color-fg)] rounded-sm shadow-lg z-10"
             >
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[11px] font-mono tracking-[0.18em] uppercase text-[#F4A653]">

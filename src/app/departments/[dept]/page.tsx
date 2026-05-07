@@ -15,7 +15,7 @@ export default function DeptDetailPage(props: PageProps<'/departments/[dept]'>) 
   const actions = DEMO_ACTIONS.filter((a) => a.department === deptName);
 
   return (
-    <div className="space-y-6 animate-page-enter">
+    <div className="space-y-8 animate-page-enter">
       <Link
         href="/departments"
         className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-[0.14em] text-[var(--color-fg-mute)] hover:text-[var(--color-saffron)] transition-colors"

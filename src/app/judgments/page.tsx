@@ -31,7 +31,7 @@ function JudgmentRow({ j }: { j: Judgment }) {
     : 0;
 
   return (
-    <div className="card action-card-hover p-4 flex flex-col sm:flex-row sm:items-center gap-4">
+    <div className="card action-card-hover p-5 flex flex-col sm:flex-row sm:items-center gap-5">
       {/* Icon */}
       <div
         className="w-10 h-10 rounded-[3px] flex items-center justify-center flex-shrink-0 border"
@@ -171,7 +171,7 @@ export default function JudgmentsPage() {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-8 animate-fade-in">
       {/* Header */}
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div>
@@ -231,7 +231,7 @@ export default function JudgmentsPage() {
           </div>
           <DropZone onFileAccepted={handleFileAccepted} />
           {uploadedFile && !extractionProgress && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <Input
                 label="Case Number"
                 placeholder="e.g. WP/12345/2025"

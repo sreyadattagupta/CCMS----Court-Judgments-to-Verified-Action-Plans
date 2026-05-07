@@ -59,7 +59,7 @@ export default function ActionsPage() {
   ];
 
   return (
-    <div className="space-y-6 animate-page-enter">
+    <div className="space-y-8 animate-page-enter">
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
@@ -107,7 +107,7 @@ export default function ActionsPage() {
       <ActionTimeline actions={DEMO_ACTIONS} />
 
       {/* Filters */}
-      <div className="card p-4">
+      <div className="card p-5">
         <div className="flex flex-wrap gap-3 items-center">
           <SearchInput
             className="flex-1 min-w-[260px]"

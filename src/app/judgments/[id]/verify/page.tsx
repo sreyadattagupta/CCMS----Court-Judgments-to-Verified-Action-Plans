@@ -222,7 +222,7 @@ export default function VerificationPage(props: PageProps<'/judgments/[id]/verif
   const activeField = fields.find((f) => f.key === activeFieldKey);
 
   return (
-    <div className="space-y-4 animate-page-enter h-[calc(100vh-120px)] flex flex-col relative">
+    <div className="space-y-5 animate-page-enter h-[calc(100vh-128px)] flex flex-col relative">
       {/* Verified ink-stamp overlay — fires on Finalize */}
       <AnimatePresence>
         {showStamp && (
@@ -276,7 +276,7 @@ export default function VerificationPage(props: PageProps<'/judgments/[id]/verif
         <div className="flex items-center gap-3">
           <Link
             href={`/judgments/${params.id}`}
-            className="inline-flex items-center gap-1.5 text-[12px] font-mono uppercase tracking-[0.14em] text-[var(--color-ink-mute)] hover:text-[var(--color-ink)] transition-colors"
+            className="inline-flex items-center gap-1.5 text-[12px] font-mono uppercase tracking-[0.14em] text-[var(--color-ink-mute)] hover:text-[var(--color-fg)] transition-colors"
           >
             <ChevronLeft size={14} /> Back
           </Link>
@@ -286,7 +286,7 @@ export default function VerificationPage(props: PageProps<'/judgments/[id]/verif
               {action.judgment?.case_number}
             </span>
             <span className="text-[var(--color-ink-mute)] mx-2">·</span>
-            <span className="text-[var(--color-ink)] font-medium">
+            <span className="text-[var(--color-fg)] font-medium">
               {judgment.bench}
             </span>
           </div>
@@ -296,7 +296,7 @@ export default function VerificationPage(props: PageProps<'/judgments/[id]/verif
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-0">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-7 flex-1 min-h-0">
         {/* ── PDF / Source pane ─────────────────────────────────── */}
         <div className="card flex flex-col overflow-hidden">
           <div className="px-4 py-3 bg-[var(--color-ink)] border-b border-[var(--color-rule)] flex items-center justify-between z-10">
@@ -438,7 +438,7 @@ export default function VerificationPage(props: PageProps<'/judgments/[id]/verif
           className="card flex flex-col overflow-hidden shadow-md border-t-4"
           style={{ borderTopColor: 'var(--color-saffron)' }}
         >
-          <div className="px-6 py-4 border-b border-[var(--color-rule)] flex items-center justify-between gap-3"
+          <div className="px-7 py-5 border-b border-[var(--color-rule)] flex items-center justify-between gap-3"
                style={{ background: 'var(--color-ink)' }}>
             <div>
               <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-fg-mute)] mb-1">
@@ -463,7 +463,7 @@ export default function VerificationPage(props: PageProps<'/judgments/[id]/verif
             />
           </div>
 
-          <div className="flex-1 overflow-y-auto p-6 space-y-4">
+          <div className="flex-1 overflow-y-auto p-7 space-y-5">
             {action.requires_legal_opinion && (
               <div
                 className="rounded-[3px] p-3 flex items-start gap-2 text-[12px]"
@@ -502,7 +502,7 @@ export default function VerificationPage(props: PageProps<'/judgments/[id]/verif
                 <div
                   key={f.key}
                   className={cn(
-                    'rounded-[3px] border p-4 transition-all bg-[var(--color-ink-2)]',
+                    'rounded-md border p-5 transition-all bg-[var(--color-ink-2)]',
                     activeFieldKey === f.key
                       ? 'border-[var(--color-saffron)] shadow-[0_0_0_1px_var(--color-saffron-glow),0_0_18px_var(--color-saffron-glow)]'
                       : 'border-[var(--color-rule)]',
@@ -669,7 +669,7 @@ export default function VerificationPage(props: PageProps<'/judgments/[id]/verif
           </div>
 
           {/* Action bar */}
-          <div className="p-4 border-t border-[var(--color-rule)] flex items-center justify-between gap-3"
+          <div className="px-7 py-5 border-t border-[var(--color-rule)] flex items-center justify-between gap-3"
                style={{ background: 'var(--color-ink)' }}>
             <div className="text-[11px] font-mono uppercase tracking-[0.12em] text-[var(--color-fg-mute)]">
               <span className="font-semibold text-[var(--color-fg)]">

@@ -48,7 +48,7 @@ export default function DropZone({ onFileAccepted, disabled, maxSizeMB = 50 }: D
   if (file) {
     return (
       <div
-        className="card p-5 flex items-center gap-4"
+        className="card p-6 flex items-center gap-5"
         style={{
           background: 'rgba(79,168,130,0.06)',
           borderColor: 'rgba(79,168,130,0.32)',

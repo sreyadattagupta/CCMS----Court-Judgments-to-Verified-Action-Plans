@@ -70,7 +70,7 @@ export default function ActionTimeline({ actions, onActionClick }: ActionTimelin
   };
 
   return (
-    <div className="card card-paper p-5">
+    <div className="card card-paper p-6">
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-fg-mute)] mb-1">

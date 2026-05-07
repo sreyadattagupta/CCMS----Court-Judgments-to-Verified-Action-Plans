@@ -11,7 +11,7 @@ import { EASE_PAPER } from '@/lib/utils';
 
 export default function DepartmentsPage() {
   return (
-    <div className="space-y-6 animate-page-enter">
+    <div className="space-y-8 animate-page-enter">
       <div>
         <div className="text-[10px] font-mono uppercase tracking-[0.22em] text-[var(--color-fg-mute)] mb-1">
           §04 · Bureaus
@@ -39,7 +39,7 @@ export default function DepartmentsPage() {
             >
               <Link
                 href={`/departments/${encodeURIComponent(dept.department)}`}
-                className="card card-paper p-5 action-card-hover block group"
+                className="card card-paper p-6 action-card-hover block group"
               >
                 {/* Header */}
                 <div className="flex items-start justify-between mb-4 gap-2">

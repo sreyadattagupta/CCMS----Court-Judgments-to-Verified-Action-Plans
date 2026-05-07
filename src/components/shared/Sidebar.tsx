@@ -49,7 +49,7 @@ export default function Sidebar() {
       aria-label="Main navigation"
     >
       {/* Press masthead */}
-      <div className="px-5 pt-6 pb-5 border-b border-white/[0.06] relative">
+      <div className="px-6 pt-7 pb-6 border-b border-white/[0.06] relative">
         <div className="flex items-start gap-3">
           {/* Wax-seal mark */}
           <motion.div
@@ -99,7 +99,7 @@ export default function Sidebar() {
 
           <div className="min-w-0 pt-0.5">
             <div
-              className="text-[var(--color-parchment)] text-[18px] leading-none"
+              className="text-[var(--color-fg)] text-[18px] leading-none"
               style={{
                 fontFamily: 'var(--font-display)',
                 fontVariationSettings: "'opsz' 36, 'WONK' 1, 'SOFT' 50",
@@ -135,7 +135,7 @@ export default function Sidebar() {
       </div>
 
       {/* Pipeline + review status */}
-      <div className="px-4 pt-3 space-y-1.5">
+      <div className="px-5 pt-4 space-y-2">
         <div className="flex items-center gap-2 px-2.5 py-1.5 bg-[#1F2D24] border border-emerald-700/30 rounded-sm">
           <span className="relative flex w-1.5 h-1.5">
             <span className="absolute inset-0 rounded-full bg-emerald-400 animate-pulse-soft" />
@@ -160,7 +160,7 @@ export default function Sidebar() {
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 py-2 mt-3 overflow-y-auto" role="navigation">
+      <nav className="flex-1 py-3 mt-4 overflow-y-auto" role="navigation">
         <SectionHeading label="The Bench" />
         {NAV_ITEMS.map(({ href, label, icon: Icon, key }) => {
           const isActive = pathname === href || pathname.startsWith(href + '/');
@@ -212,7 +212,7 @@ export default function Sidebar() {
       </nav>
 
       {/* Footer — colophon */}
-      <div className="border-t border-white/[0.06] py-3">
+      <div className="border-t border-white/[0.06] py-4">
         <Link
           href="/settings"
           className={cn('sidebar-nav-item', pathname === '/settings' && 'active')}
@@ -224,7 +224,7 @@ export default function Sidebar() {
           <span>Imprint</span>
         </Link>
 
-        <div className="flex items-center gap-3 px-5 py-3 mt-2 border-t border-white/[0.06]">
+        <div className="flex items-center gap-3 px-6 py-4 mt-3 border-t border-white/[0.06]">
           <div className="relative w-9 h-9 flex-shrink-0">
             <span
               className="absolute inset-0 rounded-sm"
@@ -234,7 +234,7 @@ export default function Sidebar() {
               }}
               aria-hidden="true"
             />
-            <span className="relative flex items-center justify-center w-full h-full text-[var(--color-parchment)] font-display text-sm font-semibold">
+            <span className="relative flex items-center justify-center w-full h-full text-[var(--color-fg)] font-display text-sm font-semibold">
               R
             </span>
           </div>

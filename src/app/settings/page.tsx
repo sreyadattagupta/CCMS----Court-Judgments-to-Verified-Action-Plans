@@ -6,12 +6,15 @@ import { Input } from '@/components/shared/Input';
 
 export default function SettingsPage() {
   return (
-    <div className="space-y-6 animate-fade-in max-w-3xl">
+    <div className="space-y-8 animate-fade-in max-w-3xl">
       <div>
+        <div className="text-[10px] font-mono uppercase tracking-[0.22em] text-[var(--color-fg-mute)] mb-1">
+          §00 · Imprint
+        </div>
         <h1 className="headline-md text-[28px] flex items-center gap-3">
-          <Settings size={28} className="text-gray-500" /> Settings
+          <Settings size={26} className="text-[var(--color-saffron)]" /> Settings
         </h1>
-        <p className="text-gray-500 text-sm mt-1">
+        <p className="text-[12px] text-[var(--color-fg-soft)] mt-2 max-w-2xl">
           Configure SAMIKSHA · CCMS integrations. Production deploys to the
           Karnataka State Data Centre on-prem; this UI surfaces the env vars
           the backend reads.
@@ -20,7 +23,7 @@ export default function SettingsPage() {
 
       {[
         {
-          icon: <Database size={18} className="text-blue-500" />,
+          icon: <Database size={18} className="text-[var(--color-azure)]" />,
           title: 'Database — PostgreSQL (SAMIKSHA metadata)',
           desc: 'Our metadata store. CCMS\'s SQL Server is read-only via stored procedure.',
           fields: [
@@ -29,7 +32,7 @@ export default function SettingsPage() {
           ],
         },
         {
-          icon: <Globe2 size={18} className="text-emerald-500" />,
+          icon: <Globe2 size={18} className="text-[var(--color-verdant)]" />,
           title: 'Source feed — Indian Kanoon (Karnataka HC)',
           desc: 'Live ingestion of Karnataka HC judgments via the public khckar docsource.',
           fields: [
@@ -37,7 +40,7 @@ export default function SettingsPage() {
           ],
         },
         {
-          icon: <Key size={18} className="text-amber-500" />,
+          icon: <Key size={18} className="text-[var(--color-saffron)]" />,
           title: 'LLM — prototype (Claude) / production (Llama 3.1 70B)',
           desc: 'SAMIKSHA SPEC §"Tech stack": Claude Sonnet 4.5 for hackathon, swappable to on-prem Llama for production.',
           fields: [
@@ -46,7 +49,7 @@ export default function SettingsPage() {
           ],
         },
         {
-          icon: <Bell size={18} className="text-green-500" />,
+          icon: <Bell size={18} className="text-[var(--color-verdant)]" />,
           title: 'Email Notifications — Resend',
           desc: 'Deadline alerts sent to assigned officers and department heads.',
           fields: [
@@ -54,7 +57,7 @@ export default function SettingsPage() {
           ],
         },
         {
-          icon: <Shield size={18} className="text-purple-500" />,
+          icon: <Shield size={18} className="text-[var(--color-violet)]" />,
           title: 'Auth — CCMS SSO',
           desc: 'No new credentials — reviewer signing uses existing CCMS Single Sign-On per SPEC §"Non-negotiables".',
           fields: [

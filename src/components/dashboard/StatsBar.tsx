@@ -178,10 +178,10 @@ function StatModule({ stat, index }: { stat: Stat; index: number }) {
       viewport={{ once: true, margin: '-15%' }}
       transition={{ duration: 0.7, delay: index * 0.08, ease: EASE_PAPER }}
       whileHover={{ y: -3 }}
-      className="card card-paper p-5 relative overflow-hidden"
+      className="card card-paper p-7 relative overflow-hidden"
     >
       {/* Eyebrow rule */}
-      <div className="flex items-center gap-2 mb-3">
+      <div className="flex items-center gap-2 mb-4">
         <span
           className="inline-flex items-center justify-center w-6 h-6 rounded-sm"
           style={{ background: `${tone.rule}1A`, color: tone.rule }}
@@ -225,7 +225,7 @@ function StatModule({ stat, index }: { stat: Stat; index: number }) {
       </div>
 
       {stat.sublabel && (
-        <div className="mt-2 text-[12px] text-[var(--color-ink-mute)] leading-snug">
+        <div className="mt-3 text-[12px] text-[var(--color-ink-mute)] leading-snug">
           {stat.sublabel}
         </div>
       )}
@@ -235,7 +235,7 @@ function StatModule({ stat, index }: { stat: Stat; index: number }) {
 
 export default function StatsBar() {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
       {STATS.map((stat, i) => (
         <StatModule key={stat.label} stat={stat} index={i} />
       ))}

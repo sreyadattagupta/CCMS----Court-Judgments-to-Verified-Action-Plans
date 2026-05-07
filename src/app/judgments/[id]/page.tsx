@@ -20,7 +20,7 @@ export default async function JudgmentDetailPage(props: PageProps<'/judgments/[i
     : 0;
 
   return (
-    <div className="space-y-6 animate-page-enter">
+    <div className="space-y-8 animate-page-enter">
       {/* Breadcrumb */}
       <Link
         href="/judgments"

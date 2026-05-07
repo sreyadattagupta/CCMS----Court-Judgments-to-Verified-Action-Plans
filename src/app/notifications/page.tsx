@@ -243,7 +243,7 @@ export default function NotificationsPage() {
   };
 
   return (
-    <div className="space-y-6 animate-page-enter max-w-3xl">
+    <div className="space-y-8 animate-page-enter max-w-3xl">
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
@@ -299,7 +299,7 @@ export default function NotificationsPage() {
               <button
                 key={type}
                 onClick={() => setFilter(type)}
-                className="card p-3 text-left transition-all hover:-translate-y-0.5"
+                className="card p-4 text-left transition-all hover:-translate-y-0.5"
                 style={{
                   borderColor: isActive ? cfg.border : 'var(--color-rule)',
                   background: isActive ? cfg.bg : 'var(--color-ink-2)',

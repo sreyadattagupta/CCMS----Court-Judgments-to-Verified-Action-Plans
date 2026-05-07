@@ -48,7 +48,7 @@ export default function ActionCard({ action, compact = false, onClick, highlight
       whileHover={{ y: -3 }}
       transition={{ duration: 0.25, ease: EASE_PAPER }}
       className={cn(
-        'card action-card-hover p-5 cursor-pointer relative group',
+        'card action-card-hover p-6 cursor-pointer relative group',
         highlighted && 'ring-1 ring-[var(--color-saffron)]/60',
         action.tier === 'C' && 'ring-1 ring-amber-300/50'
       )}
@@ -116,7 +116,7 @@ export default function ActionCard({ action, compact = false, onClick, highlight
 
       {/* Directive — set in serif, like a pull quote */}
       <p
-        className="font-display text-[15px] leading-[1.45] text-[var(--color-ink)]"
+        className="font-display text-[15px] leading-[1.45] text-[var(--color-fg)]"
         style={{
           fontVariationSettings: "'opsz' 36, 'WONK' 0",
           fontWeight: 460,

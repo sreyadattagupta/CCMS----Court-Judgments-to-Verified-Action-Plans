@@ -30,7 +30,7 @@ export default function ReportsPage() {
   }));
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-8 animate-fade-in">
       {/* Header */}
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div>
@@ -63,7 +63,7 @@ export default function ReportsPage() {
           { label: '% Compliant', value: `${Math.round((completed / totalActions) * 100)}%`, color: 'var(--color-verdant)' },
           { label: 'Overdue', value: overdue, color: 'var(--color-vermilion)' },
         ].map(({ label, value, color }) => (
-          <div key={label} className="card card-paper p-5 text-center">
+          <div key={label} className="card card-paper p-6 text-center">
             <div
               className="text-[34px] font-display font-semibold numerals-tab leading-none"
               style={{ color, fontVariationSettings: "'opsz' 96, 'WONK' 1, 'SOFT' 30" }}
@@ -80,7 +80,7 @@ export default function ReportsPage() {
       {/* Charts row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Pie chart */}
-        <div className="card card-paper p-5">
+        <div className="card card-paper p-6">
           <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-fg-mute)] mb-1">
             §05.1
           </div>
@@ -114,7 +114,7 @@ export default function ReportsPage() {
         </div>
 
         {/* Bar chart */}
-        <div className="card card-paper p-5">
+        <div className="card card-paper p-6">
           <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-fg-mute)] mb-1">
             §05.2
           </div>

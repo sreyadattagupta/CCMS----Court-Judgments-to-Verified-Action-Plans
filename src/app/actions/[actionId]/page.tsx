@@ -17,7 +17,7 @@ export default function ActionDetailPage(props: PageProps<'/actions/[actionId]'>
   const action = DEMO_ACTIONS.find((a) => a.id === params.actionId) || DEMO_ACTIONS[0];
 
   return (
-    <div className="space-y-6 animate-page-enter max-w-4xl">
+    <div className="space-y-7 animate-page-enter max-w-4xl">
       <Link
         href="/actions"
         className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-[0.14em] text-[var(--color-fg-mute)] hover:text-[var(--color-saffron)] transition-colors"
@@ -78,9 +78,9 @@ export default function ActionDetailPage(props: PageProps<'/actions/[actionId]'>
       </div>
 
       {/* Meta */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         {action.deadline_iso ? (
-          <div className="card p-4">
+          <div className="card p-6">
             <div className="text-[10px] font-mono uppercase tracking-[0.14em] text-[var(--color-fg-mute)] mb-1.5 flex items-center gap-1.5">
               <Calendar size={11} /> Compliance deadline
               {action.deadline_confidence && (
@@ -100,7 +100,7 @@ export default function ActionDetailPage(props: PageProps<'/actions/[actionId]'>
             )}
           </div>
         ) : action.deadline_confidence === 'REQUIRES_LEGAL_OPINION' ? (
-          <div className="card p-4"
+          <div className="card p-6"
                style={{ borderColor: 'rgba(231,140,45,0.4)', background: 'rgba(231,140,45,0.05)' }}>
             <div className="text-[10px] font-mono mb-1.5 font-semibold uppercase tracking-[0.14em]"
                  style={{ color: '#F0A04A' }}>
@@ -110,7 +110,7 @@ export default function ActionDetailPage(props: PageProps<'/actions/[actionId]'>
           </div>
         ) : null}
         {action.appeal_deadline_iso && (
-          <div className="card p-4">
+          <div className="card p-6">
             <div className="text-[10px] font-mono uppercase tracking-[0.14em] text-[var(--color-fg-mute)] mb-1.5 flex items-center gap-1.5">
               <Calendar size={11} /> Appeal limitation
               {action.appeal_deadline_confidence && (
@@ -130,7 +130,7 @@ export default function ActionDetailPage(props: PageProps<'/actions/[actionId]'>
           </div>
         )}
         {action.assigned_to && (
-          <div className="card p-4">
+          <div className="card p-6">
             <div className="text-[10px] font-mono uppercase tracking-[0.14em] text-[var(--color-fg-mute)] mb-1.5 flex items-center gap-1.5">
               <User size={12} /> Assigned To
             </div>
@@ -148,7 +148,7 @@ export default function ActionDetailPage(props: PageProps<'/actions/[actionId]'>
       </div>
 
       {/* Source */}
-      <div className="card p-5">
+      <div className="card p-6">
         <div className="flex items-center gap-2 mb-3 text-[10px] font-mono uppercase tracking-[0.14em] text-[var(--color-fg-mute)]">
           <Quote size={13} className="text-[var(--color-saffron)]" />
           Source text · page {action.source_page}
@@ -207,7 +207,7 @@ export default function ActionDetailPage(props: PageProps<'/actions/[actionId]'>
       )}
 
       {/* Update status */}
-      <div className="card p-5">
+      <div className="card p-6">
         <h3 className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-fg-mute)] mb-3">
           Update status
         </h3>

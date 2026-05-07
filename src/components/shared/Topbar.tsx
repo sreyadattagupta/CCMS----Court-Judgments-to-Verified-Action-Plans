@@ -60,7 +60,7 @@ export default function Topbar() {
         {/* Hamburger */}
         <button
           onClick={toggleSidebar}
-          className="p-2 rounded-sm hover:bg-[var(--color-parchment-dark)] transition-colors md:hidden flex-shrink-0"
+          className="p-2 rounded-sm hover:bg-[var(--color-ink-3)] transition-colors md:hidden flex-shrink-0"
           aria-label="Toggle sidebar"
         >
           <Menu size={18} className="text-[var(--color-ink-soft)]" />
@@ -90,13 +90,13 @@ export default function Topbar() {
                   /
                 </span>
                 {i === crumbs.length - 1 ? (
-                  <span className="font-display text-[14px] font-medium text-[var(--color-ink)] truncate">
+                  <span className="font-display text-[14px] font-medium text-[var(--color-fg)] truncate">
                     {crumb.label}
                   </span>
                 ) : (
                   <Link
                     href={crumb.path}
-                    className="text-[var(--color-ink-mute)] text-[14px] hover:text-[var(--color-ink)] transition-colors truncate"
+                    className="text-[var(--color-ink-mute)] text-[14px] hover:text-[var(--color-fg)] transition-colors truncate"
                   >
                     {crumb.label}
                   </Link>
@@ -110,15 +110,15 @@ export default function Topbar() {
       {/* Right column */}
       <div className="flex items-center gap-3 flex-shrink-0">
         {/* Search */}
-        <div className="hidden md:flex items-center gap-2 bg-[var(--color-parchment)] border border-[var(--color-border)] rounded-sm px-3 py-1.5 w-64 transition-all focus-within:border-[var(--color-saffron)] focus-within:bg-[var(--color-surface)]">
+        <div className="hidden md:flex items-center gap-2 bg-[var(--color-ink-3)] border border-[var(--color-rule)] rounded-md px-3 py-1.5 w-64 transition-all focus-within:border-[var(--color-saffron)] focus-within:bg-[var(--color-ink-2)]">
           <Search size={14} className="text-[var(--color-ink-mute)]" />
           <input
             type="text"
             placeholder="Search docket / dept / directive…"
-            className="bg-transparent text-[12px] text-[var(--color-ink)] outline-none flex-1 placeholder:text-[var(--color-ink-mute)] font-mono"
+            className="bg-transparent text-[12px] text-[var(--color-fg)] outline-none flex-1 placeholder:text-[var(--color-ink-mute)] font-mono"
             aria-label="Global search"
           />
-          <kbd className="text-[9px] text-[var(--color-ink-mute)] bg-[var(--color-parchment-dark)] rounded-sm px-1 py-0.5 font-mono flex-shrink-0 border border-[var(--color-border)]">
+          <kbd className="text-[9px] text-[var(--color-ink-mute)] bg-[var(--color-ink-3)] rounded-sm px-1 py-0.5 font-mono flex-shrink-0 border border-[var(--color-border)]">
             ⌘K
           </kbd>
         </div>
@@ -130,7 +130,7 @@ export default function Topbar() {
             <div className="text-[9px] font-mono uppercase tracking-[0.18em] text-[var(--color-ink-mute)]">
               Edition
             </div>
-            <div className="text-[11px] font-display text-[var(--color-ink)]">
+            <div className="text-[11px] font-display text-[var(--color-fg)]">
               {today} <span className="text-[var(--color-ink-mute)] font-mono">· {time} IST</span>
             </div>
           </div>
@@ -139,7 +139,7 @@ export default function Topbar() {
         {/* Upload */}
         <Link
           href="/judgments"
-          className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-sm text-[12px] font-mono font-semibold tracking-[0.08em] uppercase text-[var(--color-parchment)] transition-all hover:-translate-y-0.5"
+          className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-sm text-[12px] font-mono font-semibold tracking-[0.08em] uppercase text-[var(--color-fg)] transition-all hover:-translate-y-0.5"
           style={{
             background: 'linear-gradient(180deg, #C9610A 0%, #8E3D00 100%)',
             boxShadow:
@@ -153,7 +153,7 @@ export default function Topbar() {
         {/* Notifications */}
         <Link
           href="/notifications"
-          className="relative p-2 rounded-sm hover:bg-[var(--color-parchment-dark)] transition-colors"
+          className="relative p-2 rounded-sm hover:bg-[var(--color-ink-3)] transition-colors"
           aria-label={`Bulletins · ${notificationCount} unread`}
         >
           <Bell
